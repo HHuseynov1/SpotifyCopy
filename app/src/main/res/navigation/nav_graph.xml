@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/getStartedFragment">
 
+    <fragment
+        android:id="@+id/getStartedFragment"
+        android:name="com.example.spotifycopy.GetStartedFragment"
+        android:label="fragment_get_started"
+        tools:layout="@layout/fragment_get_started" >
+        <action
+            android:id="@+id/action_getStartedFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_getStartedFragment_to_login"
+            app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.spotifycopy.CreateEmailFragment"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_create_email" >
+        <action
+            android:id="@+id/action_createAccountFragment_to_create_password"
+            app:destination="@id/create_password" />
+    </fragment>
+    <fragment
+        android:id="@+id/create_password"
+        android:name="com.example.spotifycopy.CreatePasswordFragment"
+        android:label="fragment_create_password"
+        tools:layout="@layout/fragment_create_password" >
+        <action
+            android:id="@+id/action_create_password_to_select_Gender"
+            app:destination="@id/select_Gender" />
+    </fragment>
+    <fragment
+        android:id="@+id/select_Gender"
+        android:name="com.example.spotifycopy.SelectGenderFragment"
+        android:label="fragment_select__gender"
+        tools:layout="@layout/fragment_select__gender" >
+        <action
+            android:id="@+id/action_select_Gender_to_startlisteningFragment"
+            app:destination="@id/startlisteningFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startlisteningFragment"
+        android:name="com.example.spotifycopy.StartlisteningFragment"
+        android:label="fragment_startlistening"
+        tools:layout="@layout/fragment_startlistening" >
+        <action
+            android:id="@+id/action_startlisteningFragment_to_homeFragment"
+            app:destination="@id/fragmentTool" />
+        <action
+            android:id="@+id/action_startlisteningFragment_self"
+            app:destination="@id/startlisteningFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.spotifycopy.Login"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_login_to_homeFragment"
+            app:destination="@id/fragmentTool" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTool"
+        android:name="com.example.spotifycopy.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_main_tool" />
 </navigation>
