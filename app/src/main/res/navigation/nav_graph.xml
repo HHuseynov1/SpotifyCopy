@@ -6,6 +6,22 @@
     app:startDestination="@id/getStartedFragment">
 
     <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.spotifycopy.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.example.spotifycopy.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.spotifycopy.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
         android:id="@+id/getStartedFragment"
         android:name="com.example.spotifycopy.GetStartedFragment"
         android:label="fragment_get_started"
@@ -50,9 +66,6 @@
         android:label="fragment_startlistening"
         tools:layout="@layout/fragment_startlistening" >
         <action
-            android:id="@+id/action_startlisteningFragment_to_homeFragment"
-            app:destination="@id/fragmentTool" />
-        <action
             android:id="@+id/action_startlisteningFragment_self"
             app:destination="@id/startlisteningFragment" />
     </fragment>
@@ -63,11 +76,6 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_login_to_homeFragment"
-            app:destination="@id/fragmentTool" />
+            app:destination="@id/homeFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/fragmentTool"
-        android:name="com.example.spotifycopy.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_main_tool" />
 </navigation>
