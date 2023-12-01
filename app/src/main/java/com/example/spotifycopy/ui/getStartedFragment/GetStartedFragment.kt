@@ -1,21 +1,34 @@
-package com.example.spotifycopy
+package com.example.spotifycopy.ui.getStartedFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentGetStartedBinding
 
 class GetStartedFragment : Fragment() {
-    lateinit var binding: FragmentGetStartedBinding
+    private lateinit var binding: FragmentGetStartedBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentGetStartedBinding.inflate(inflater,container,false)
+        binding = FragmentGetStartedBinding.inflate(inflater, container, false)
 
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        onClick()
+    }
+
+    private fun onClick(){
         binding.btnLogIn.setOnClickListener {
             findNavController().navigate(R.id.action_getStartedFragment_to_login)
         }
@@ -23,9 +36,5 @@ class GetStartedFragment : Fragment() {
         binding.btnSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_getStartedFragment_to_createAccountFragment)
         }
-
-        return binding.root
     }
-
-
 }

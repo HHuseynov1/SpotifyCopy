@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#111111"
-        tools:context=".HomeFragment">
+        tools:context=".ui.homeFragment.HomeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/selectMusicOrPodcast"

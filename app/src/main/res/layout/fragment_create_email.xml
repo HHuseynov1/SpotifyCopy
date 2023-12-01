@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateEmailFragment"
+    tools:context=".ui.createEmailFragment.CreateEmailFragment"
     android:background="#111111"
     >
 
@@ -26,6 +26,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBack"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/left"
