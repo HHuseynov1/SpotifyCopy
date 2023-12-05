@@ -13,6 +13,8 @@
     <string name="choose_3_or_more_artists_you_like">Choose 3 or more artists you like</string>
     <string name="search">Search</string>
     <string name="examplename">ExampleName</string>
+    <string name="add_artists">Add artists</string>
+    <string name="artist">Artist</string>
 
 
 </resources>
