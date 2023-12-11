@@ -1,4 +1,4 @@
-package com.example.spotifycopy.ui.libraryFragment
+package com.example.spotifycopy.view.ui.libraryFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

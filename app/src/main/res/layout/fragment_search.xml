@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".ui.searchFragment.SearchFragment"
+        tools:context=".view.ui.searchFragment.SearchFragment"
         android:background="#111111">
 
         <androidx.appcompat.widget.Toolbar

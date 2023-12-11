@@ -1,4 +1,4 @@
-package com.example.spotifycopy.ui.getStartedFragment
+package com.example.spotifycopy.view.ui.getStartedFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

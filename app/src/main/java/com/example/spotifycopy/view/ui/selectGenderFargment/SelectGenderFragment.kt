@@ -1,4 +1,4 @@
-package com.example.spotifycopy.ui.selectGenderFargment
+package com.example.spotifycopy.view.ui.selectGenderFargment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -51,7 +51,7 @@ class SelectGenderFragment : Fragment() {
 
     private fun onClick(bindingGenderItem: SelectGenderItemBinding){
         bindingGenderItem.btnGender.setOnClickListener {
-            findNavController().navigate(R.id.startListeningFragment1)
+            findNavController().navigate(R.id.startListeningFragmentArtists)
         }
     }
 }

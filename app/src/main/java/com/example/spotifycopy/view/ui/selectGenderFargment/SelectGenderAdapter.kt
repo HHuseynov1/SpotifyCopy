@@ -1,4 +1,4 @@
-package com.example.spotifycopy.ui.selectGenderFargment
+package com.example.spotifycopy.view.ui.selectGenderFargment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

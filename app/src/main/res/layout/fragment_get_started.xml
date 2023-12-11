@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#111111"
-    tools:context=".ui.getStartedFragment.GetStartedFragment">
+    tools:context=".view.ui.getStartedFragment.GetStartedFragment">
 
     <ImageView
         android:layout_width="110dp"

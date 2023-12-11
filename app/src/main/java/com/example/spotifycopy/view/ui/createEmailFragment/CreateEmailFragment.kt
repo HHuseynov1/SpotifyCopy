@@ -1,4 +1,4 @@
-package com.example.spotifycopy.ui.createEmailFragment
+package com.example.spotifycopy.view.ui.createEmailFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.example.spotifycopy.ui.createPasswordFragmen
+package com.example.spotifycopy.view.ui.createPasswordFragmen
 
 import android.os.Bundle
 import android.view.LayoutInflater

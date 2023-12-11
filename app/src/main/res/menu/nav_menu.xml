@@ -4,23 +4,22 @@
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Home"
+        android:title="@string/home"
         android:id="@+id/homeFragment"
         android:icon="@drawable/baseline_home_24"
         />
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Search"
+        android:title="@string/search"
         android:id="@+id/searchFragment"
         android:icon="@drawable/baseline_search_24"
         />
     <item
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Your Library"
+        android:title="@string/your_library"
         android:id="@+id/libraryFragment"
         android:icon="@drawable/libraryfull"
         />
-
 </menu>
