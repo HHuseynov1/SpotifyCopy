@@ -12,6 +12,8 @@
         android:background="#111111"
         tools:context=".view.ui.homeFragment.HomeFragment">
 
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
