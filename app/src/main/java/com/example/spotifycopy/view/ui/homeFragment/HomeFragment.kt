@@ -20,13 +20,11 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentHomeBinding.inflate(inflater,container,false)
 
         binding.profileImage.setImageResource(R.drawable.spotifylogo)
 
         binding.profileImage.setOnClickListener {
-
         }
 
         return binding.root
