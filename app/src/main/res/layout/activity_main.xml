@@ -35,10 +35,17 @@
         />
 
     <com.google.android.material.navigation.NavigationView
-        android:layout_width="match_parent"
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#3E3D3D"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/left_menu"
+        tools:ignore="MissingConstraints" />
 
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
