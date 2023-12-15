@@ -4,6 +4,9 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.spotifycopy.databinding.ActivityMainBinding
@@ -70,6 +73,33 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun navigationView(){
+        toggle = ActionBarDrawerToggle(
+            requireActivity(),
+            binding.drawerLayout,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+
+        binding.profileImage.setImageResource(R.drawable.spotifylogo)
+
+        binding.profileImage.setOnClickListener {
+            binding.drawerLayout.openDrawer( GravityCompat.START )
+        }
+
+        binding.navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.whatsNew -> Toast.makeText(requireContext(),"What's New", Toast.LENGTH_LONG).show()
+                R.id.listeningHistory -> Toast.makeText(requireContext(),"Listening History", Toast.LENGTH_LONG).show()
+                R.id.settings -> Toast.makeText(requireContext(),"Settings", Toast.LENGTH_LONG).show()
+            }
+            true
+        }
     }
 }
