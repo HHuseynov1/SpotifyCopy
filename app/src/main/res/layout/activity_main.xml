@@ -33,6 +33,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/nav_menu"
         />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -43,9 +45,8 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
         app:menu="@menu/left_menu"
         tools:ignore="MissingConstraints" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

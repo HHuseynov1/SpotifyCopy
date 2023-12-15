@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="130dp"
     android:background="#3E3D3D"
-    android:paddingStart="20dp"
     android:paddingTop="25dp"
-    android:paddingBottom="25dp">
+>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        tools:ignore="MissingConstraints">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circle_image_view"
@@ -26,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:text="ExampleName"
+        android:text="@string/examplename"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -38,12 +43,22 @@
         android:id="@+id/txtViewProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View profile"
+        android:text="@string/view_profile"
         android:textColor="@android:color/darker_gray"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txtName"
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

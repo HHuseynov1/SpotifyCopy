@@ -19,5 +19,9 @@
     <string name="your_library">Your Library</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="settings_and_privacy">Settings and privacy</string>
+    <string name="listening_history">Listening history</string>
+    <string name="what_s_new">What\'s new</string>
+    <string name="view_profile">View profile</string>
 
 </resources>

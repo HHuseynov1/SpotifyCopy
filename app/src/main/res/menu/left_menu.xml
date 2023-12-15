@@ -3,23 +3,23 @@
 
     <item
         android:id="@+id/whatsNew"
-        android:title="What's new"
+        android:title="@string/what_s_new"
         android:padding="10dp"
         android:icon="@drawable/lightning"
         />
 
     <item
         android:id="@+id/listeningHistory"
-        android:title="Listening history"
+        android:title="@string/listening_history"
         android:padding="10dp"
-        android:icon="@drawable/baseline_history_24"
+        android:icon="@drawable/baseline_history_24_white"
         />
 
     <item
         android:id="@+id/settings"
-        android:title="Settings and privacy"
+        android:title="@string/settings_and_privacy"
         android:padding="10dp"
-        android:icon="@drawable/outline_settings_24"
+        android:icon="@drawable/outline_settings_24_white"
         />
 
 </menu>
