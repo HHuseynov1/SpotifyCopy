@@ -13,6 +13,9 @@ import com.example.spotifycopy.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun navigationView(){
         toggle = ActionBarDrawerToggle(
-            requireActivity(),
+            this,
             binding.drawerLayout,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
@@ -86,18 +89,11 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-
-        binding.profileImage.setImageResource(R.drawable.spotifylogo)
-
-        binding.profileImage.setOnClickListener {
-            binding.drawerLayout.openDrawer( GravityCompat.START )
-        }
-
         binding.navView.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.whatsNew -> Toast.makeText(requireContext(),"What's New", Toast.LENGTH_LONG).show()
-                R.id.listeningHistory -> Toast.makeText(requireContext(),"Listening History", Toast.LENGTH_LONG).show()
-                R.id.settings -> Toast.makeText(requireContext(),"Settings", Toast.LENGTH_LONG).show()
+                R.id.whatsNew -> Toast.makeText(this,"What's New", Toast.LENGTH_LONG).show()
+                R.id.listeningHistory -> Toast.makeText(this,"Listening History", Toast.LENGTH_LONG).show()
+                R.id.settings -> Toast.makeText(this,"Settings", Toast.LENGTH_LONG).show()
             }
             true
         }
