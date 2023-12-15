@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/whatsNew"
+        android:title="What's new"
+        android:padding="10dp"
+        android:icon="@drawable/lightning"
+        />
+
+    <item
+        android:id="@+id/listeningHistory"
+        android:title="Listening history"
+        android:padding="10dp"
+        android:icon="@drawable/baseline_history_24"
+        />
+
+    <item
+        android:id="@+id/settings"
+        android:title="Settings and privacy"
+        android:padding="10dp"
+        android:icon="@drawable/outline_settings_24"
+        />
+
+</menu>
