@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    fun openDrawer(){
+        binding.drawerLayout.openDrawer(DrawerLayout.)
+    }
+
     private fun bottomView() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment

@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.Fragment
+import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.ActivityMainBinding
 import com.example.spotifycopy.databinding.FragmentHomeBinding
@@ -22,9 +23,12 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater,container,false)
 
+        val mainActivity = activity as MainActivity
+
         binding.profileImage.setImageResource(R.drawable.spotifylogo)
 
         binding.profileImage.setOnClickListener {
+
         }
 
         return binding.root
