@@ -53,6 +53,9 @@ dependencies {
 
     implementation("com.google.firebase:firebase-analytics")
 
+    //Splash Screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")

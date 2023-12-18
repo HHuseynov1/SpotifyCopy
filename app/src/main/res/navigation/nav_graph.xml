@@ -91,12 +91,12 @@
     </fragment>
     <fragment
         android:id="@+id/songFragment"
-        android:name="com.example.spotifycopy.SongFragment"
+        android:name="com.example.spotifycopy.view.ui.songFragment.SongFragment"
         android:label="fragment_song"
         tools:layout="@layout/fragment_song" />
     <fragment
         android:id="@+id/insidePlaylistFragment"
-        android:name="com.example.spotifycopy.InsidePlaylistFragment"
+        android:name="com.example.spotifycopy.view.ui.insidePlaylistFragment.InsidePlaylistFragment"
         android:label="fragment_inside_playlist"
         tools:layout="@layout/fragment_inside_playlist" />
 </navigation>
