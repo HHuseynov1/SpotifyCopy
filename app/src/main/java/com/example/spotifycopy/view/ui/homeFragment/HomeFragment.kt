@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
         binding.profileImage.setImageResource(R.drawable.spotifylogo)
 
         binding.profileImage.setOnClickListener {
-
+            mainActivity.openDrawer()
         }
 
         return binding.root

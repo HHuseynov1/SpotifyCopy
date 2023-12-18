@@ -7,69 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".view.ui.libraryFragment.LibraryFragment"
     android:background="#111111"
+    android:orientation="vertical"
     >
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/SearchToolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        android:padding="20dp"
-        >
+   <com.google.android.material.appbar.AppBarLayout
+       android:id="@+id/appBarLayout"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="#0000"
+       tools:ignore="MissingConstraints">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+       <Toolbar
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/user"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:text="A"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/txtLibrary"
-                app:layout_constraintTop_toTopOf="@+id/txtLibrary" />
+           <androidx.constraintlayout.widget.ConstraintLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="15dp"
+               >
 
-            <TextView
-                android:id="@+id/txtLibrary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:text="Your Library"
-                android:textColor="#FFFFFF"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/user"
-                app:layout_constraintTop_toTopOf="parent" />
+               <de.hdodenhof.circleimageview.CircleImageView
+                   android:id="@+id/profileImage"
+                   android:layout_width="32dp"
+                   android:layout_height="32dp"
+                   android:src="@drawable/spotifylogo"
+                   tools:ignore="MissingConstraints" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSearch"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/baseline_search_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnCreate"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="10dp"
-                />
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="0dp"
+                   app:layout_constraintStart_toEndOf="@id/profileImage"
+                   android:text="@string/your_library"
+                   app:layout_constraintBottom_toBottomOf="@id/profileImage"
+                   app:layout_constraintTop_toTopOf="@id/profileImage"
+                   android:textSize="25sp"
+                   android:layout_marginStart="10dp"
+                   android:textColor="@color/white"
+                   android:textStyle="bold"
+                   />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCreate"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/baseline_add_24"
-                app:layout_constraintBottom_toBottomOf="@+id/txtLibrary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txtLibrary" />
+               <androidx.appcompat.widget.AppCompatButton
+                   android:id="@+id/btnAdd"
+                   android:layout_width="32dp"
+                   android:layout_height="0dp"
+                   android:background="@drawable/baseline_add_24"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintBottom_toBottomOf="@id/profileImage"
+                   app:layout_constraintTop_toTopOf="@id/profileImage"
+                   />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.appcompat.widget.Toolbar>
+               <androidx.appcompat.widget.AppCompatButton
+                   android:layout_width="32dp"
+                   android:layout_height="0dp"
+                   android:background="@drawable/search_for_library"
+                   app:layout_constraintEnd_toStartOf="@id/btnAdd"
+                   android:layout_marginEnd="10dp"
+                   app:layout_constraintTop_toTopOf="@id/profileImage"
+                   app:layout_constraintBottom_toBottomOf="@id/profileImage"
+                   />
 
+           </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+       </Toolbar>
+   </com.google.android.material.appbar.AppBarLayout>
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
@@ -79,7 +81,7 @@
         android:weightSum="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/SearchToolBar">
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
 
         <RadioButton
             android:id="@+id/btnPlaylist"
@@ -90,7 +92,7 @@
             android:background="@drawable/radio_button"
             android:button="@android:color/transparent"
             android:gravity="center"
-            android:text="Playlist"
+            android:text="@string/playlist"
             android:textColor="#FFFFFF" />
 
         <RadioButton
@@ -101,7 +103,7 @@
             android:background="@drawable/radio_button"
             android:button="@android:color/transparent"
             android:gravity="center"
-            android:text="Artist"
+            android:text="@string/artist"
             android:textColor="#FFFFFF" />
     </RadioGroup>
 
@@ -122,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#0000"
                 android:drawableLeft="@drawable/baseline_swap_vert_24"
-                android:text="Recents"
+                android:text="@string/recents"
                 tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -138,50 +140,49 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPlaylist"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
                 app:layout_constraintBottom_toTopOf="@id/rvArtist"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnRecents"
-                android:layout_marginHorizontal="15dp"
-                />
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:listitem="@layout/playlist_item_for_library" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvArtist"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
                 app:layout_constraintBottom_toTopOf="@id/btnAddArtists"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvPlaylist"
-                android:layout_marginHorizontal="15dp"
-                />
+                tools:listitem="@layout/artists_item_for_library" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddArtists"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/btnAddPodcastsAndShows"
-                app:layout_constraintTop_toBottomOf="@id/rvArtist"
-                android:padding="30dp"
-                app:cornerRadius="0dp"
-                android:backgroundTint="#111111"
+                android:layout_height="60dp"
                 android:layout_marginHorizontal="15dp"
-                />
+                android:backgroundTint="#111111"
+                android:padding="30dp"
+                app:layout_constraintBottom_toTopOf="@id/btnAddPodcastsAndShows"
+                app:layout_constraintTop_toBottomOf="@id/rvArtist" />
 
             <ImageView
                 android:id="@+id/imgAddArtists"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@drawable/radio_button"
                 app:layout_constraintBottom_toBottomOf="@+id/btnAddArtists"
                 app:layout_constraintStart_toStartOf="@+id/btnAddArtists"
-                app:layout_constraintTop_toBottomOf="@+id/rvArtist" />
+                app:layout_constraintTop_toTopOf="@id/btnAddArtists" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnAddFirst"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:background="@drawable/baseline_add_24"
                 app:layout_constraintBottom_toBottomOf="@+id/imgAddArtists"
                 app:layout_constraintEnd_toEndOf="@+id/imgAddArtists"
@@ -192,41 +193,40 @@
                 android:id="@+id/txtAddArtists"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/add_artists"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/btnAddArtists"
                 app:layout_constraintStart_toEndOf="@+id/imgAddArtists"
-                app:layout_constraintTop_toBottomOf="@+id/rvArtist" />
+                app:layout_constraintTop_toTopOf="@+id/btnAddArtists" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddPodcastsAndShows"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="15dp"
+                android:backgroundTint="#111111"
+                android:padding="30dp"
+                android:textAlignment="textStart"
+                app:cornerRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnAddArtists"
-                tools:layout_editor_absoluteX="0dp"
-                android:padding="30dp"
-                app:cornerRadius="0dp"
-                android:backgroundTint="#111111"
-                android:textAlignment="textStart"
-                android:layout_marginHorizontal="15dp"
-                />
+                tools:layout_editor_absoluteX="0dp" />
 
             <ImageView
                 android:id="@+id/imgAddPodcastsAndShows"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@drawable/radio_button"
                 app:layout_constraintBottom_toBottomOf="@id/btnAddPodcastsAndShows"
                 app:layout_constraintStart_toStartOf="@+id/btnAddPodcastsAndShows"
-                app:layout_constraintTop_toBottomOf="@+id/btnAddArtists" />
+                app:layout_constraintTop_toTopOf="@+id/btnAddPodcastsAndShows" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnAddSecond"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:background="@drawable/baseline_add_24"
                 app:layout_constraintBottom_toBottomOf="@+id/imgAddPodcastsAndShows"
                 app:layout_constraintEnd_toEndOf="@+id/imgAddArtists"
@@ -237,13 +237,13 @@
                 android:id="@+id/txtAddPodcastsAndShows"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add podcasts &amp; shows"
                 android:layout_marginStart="10dp"
+                android:text="Add podcasts &amp; shows"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/btnAddPodcastsAndShows"
                 app:layout_constraintStart_toEndOf="@+id/imgAddPodcastsAndShows"
-                app:layout_constraintTop_toBottomOf="@+id/btnAddArtists" />
+                app:layout_constraintTop_toTopOf="@+id/btnAddPodcastsAndShows" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -89,4 +89,14 @@
             android:id="@+id/action_startListeningFragmentArtists_to_startListeningFragment2"
             app:destination="@id/startListeningFragmentEnd" />
     </fragment>
+    <fragment
+        android:id="@+id/songFragment"
+        android:name="com.example.spotifycopy.SongFragment"
+        android:label="fragment_song"
+        tools:layout="@layout/fragment_song" />
+    <fragment
+        android:id="@+id/insidePlaylistFragment"
+        android:name="com.example.spotifycopy.InsidePlaylistFragment"
+        android:label="fragment_inside_playlist"
+        tools:layout="@layout/fragment_inside_playlist" />
 </navigation>

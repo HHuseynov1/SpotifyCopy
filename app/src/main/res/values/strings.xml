@@ -22,5 +22,11 @@
     <string name="listening_history">Listening history</string>
     <string name="what_s_new">What\'s new</string>
     <string name="view_profile">View profile</string>
+    <string name="what_do_you_want_to_listen_to">What do you want to listen to?</string>
+    <string name="playlist">Playlist</string>
+    <string name="recents">Recents</string>
+    <string name="browse_all">Browse all</string>
+    <string name="exampleplaylist">ExamplePlaylist</string>
+    <string name="exampletime">ExampleTime</string>
 
 </resources>
