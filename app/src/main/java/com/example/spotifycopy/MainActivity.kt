@@ -44,13 +44,13 @@ class MainActivity : AppCompatActivity() {
 
         bottomView()
         navigationViewAccess()
+        navigationView()
 
         setContentView(binding.root)
     }
 
     fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
-        navigationView()
     }
 
     private fun bottomView() {
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun navigationView() {
+    private fun navigationView() {
         toggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,
