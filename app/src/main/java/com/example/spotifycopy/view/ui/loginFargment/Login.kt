@@ -27,5 +27,8 @@ class Login : Fragment() {
         binding.btnLogin.setOnClickListener{
             findNavController().navigate(R.id.homeFragment)
         }
+        binding.btnBack.setOnClickListener{
+            findNavController().popBackStack()
+        }
     }
 }

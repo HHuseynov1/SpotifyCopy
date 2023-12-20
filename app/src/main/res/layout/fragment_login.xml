@@ -69,7 +69,7 @@
         android:id="@+id/txtPasswordLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password"
+        android:text="@string/password"
         android:textColor="@color/white"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -91,7 +91,7 @@
         android:layout_marginHorizontal="16dp"
         android:background="@drawable/border_edittext"
         android:padding="10dp"
-        android:drawableRight="@drawable/baseline_remove_red_eye_24"
+        android:drawableEnd="@drawable/baseline_remove_red_eye_24"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -103,7 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPasswordLogin"
         app:cornerRadius="50dp"
-        android:text="Next"
+        android:text="@string/next"
         android:textColor="#111111"
         android:layout_marginTop="30dp"
         />
@@ -111,9 +111,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log in without password"
+        android:text="@string/log_in_without_password"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="15dp"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
         android:background="#0000"

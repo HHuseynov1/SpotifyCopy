@@ -33,5 +33,13 @@
     <string name="we_ve_made_a_playlist_to_get_you_started">We’ve made a playlist to get you started</string>
     <string name="start_listening">Start Listening</string>
     <string name="not_now">Not now</string>
+    <string name="log_in_without_password">Log in without password</string>
+    <string name="next">Next</string>
+    <string name="password">Password</string>
+    <string name="you_ll_need_to_confirm_this_email_later">You\'ll need to confirm this email later.</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="use_at_least_8_characters">Use at least 8 characters</string>
+    <string name="enter_your_password">Enter your password</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -22,18 +23,24 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var toggle: ActionBarDrawerToggle
 
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        Thread.sleep(3000)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                !viewModel.isReady.value
+            }
+        }
 //        val w = window
 //        w.setFlags(
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //        )
-        installSplashScreen()
+
 
         bottomView()
         navigationViewAccess()
@@ -41,8 +48,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    fun openDrawer(){
-        binding.drawerLayout.openDrawer( GravityCompat.START )
+    fun openDrawer() {
+        binding.drawerLayout.openDrawer(GravityCompat.START)
         navigationView()
     }
 
@@ -74,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigationView() {
+    fun navigationView() {
         toggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,

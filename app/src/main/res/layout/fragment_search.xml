@@ -16,7 +16,8 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000">
+            android:background="#00000000"
+            tools:ignore="MissingConstraints">
 
             <Toolbar
                 android:layout_width="match_parent"

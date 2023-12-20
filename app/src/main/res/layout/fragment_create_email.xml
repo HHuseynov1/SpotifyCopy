@@ -13,7 +13,7 @@
         android:id="@+id/appBarLayout"
         android:layout_height="wrap_content"
         android:background="#0000"
-        >
+        tools:ignore="MissingConstraints">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create an account"
+        android:text="@string/create_an_account"
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         android:textSize="21sp"
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtEmail"
-        android:hint="Enter your email"
+        android:hint="@string/enter_your_email"
         android:textColorHint="@color/white"
         android:layout_marginTop="15dp"
         android:layout_marginHorizontal="16dp"
@@ -76,7 +76,7 @@
         android:id="@+id/txtBottomEdt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You'll need to confirm this email later."
+        android:text="@string/you_ll_need_to_confirm_this_email_later"
         app:layout_constraintTop_toBottomOf="@id/edtEmail"
         app:layout_constraintStart_toStartOf="@id/edtEmail"
         android:layout_marginTop="5dp"
@@ -93,7 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtBottomEdt"
         app:cornerRadius="50dp"
-        android:text="Next"
+        android:text="@string/next"
         android:textColor="#111111"
         android:layout_marginTop="20dp"
         />
