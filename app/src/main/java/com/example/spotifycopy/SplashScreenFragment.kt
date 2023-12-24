@@ -12,7 +12,7 @@ import com.example.spotifycopy.databinding.FragmentSplashScreenBinding
 
 class SplashScreenFragment : Fragment() {
 
-    lateinit var binding : FragmentSplashScreenBinding
+    private lateinit var binding : FragmentSplashScreenBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

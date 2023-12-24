@@ -45,16 +45,20 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     // CircleImage
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+
     //FireBase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
 
-    // Declare the dependency for the Cloud Firestore library
-    implementation("com.google.firebase:firebase-firestore")
+    //FireBase Storage
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 
     implementation("com.google.firebase:firebase-analytics")
 
     //Splash Screen
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

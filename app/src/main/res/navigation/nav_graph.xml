@@ -3,100 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/getStartedFragment">
+    app:startDestination="@id/songFragment">
 
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.spotifycopy.view.ui.searchFragment.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
-    <fragment
-        android:id="@+id/libraryFragment"
-        android:name="com.example.spotifycopy.view.ui.libraryFragment.LibraryFragment"
-        android:label="fragment_library"
-        tools:layout="@layout/fragment_library" />
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.spotifycopy.view.ui.homeFragment.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
-        android:id="@+id/getStartedFragment"
-        android:name="com.example.spotifycopy.view.ui.getStartedFragment.GetStartedFragment"
-        android:label="fragment_get_started"
-        tools:layout="@layout/fragment_get_started" >
-        <action
-            android:id="@+id/action_getStartedFragment_to_createAccountFragment"
-            app:destination="@id/createEmailFragment" />
-        <action
-            android:id="@+id/action_getStartedFragment_to_login"
-            app:destination="@id/login" />
-    </fragment>
-    <fragment
-        android:id="@+id/createEmailFragment"
-        android:name="com.example.spotifycopy.view.ui.createEmailFragment.CreateEmailFragment"
-        android:label="fragment_create_account"
-        tools:layout="@layout/fragment_create_email" >
-        <action
-            android:id="@+id/action_createAccountFragment_to_create_password"
-            app:destination="@id/createPasswordFargment" />
-    </fragment>
-    <fragment
-        android:id="@+id/createPasswordFargment"
-        android:name="com.example.spotifycopy.view.ui.createPasswordFragmen.CreatePasswordFragment"
-        android:label="fragment_create_password"
-        tools:layout="@layout/fragment_create_password" >
-        <action
-            android:id="@+id/action_create_password_to_select_Gender"
-            app:destination="@id/selectGenderFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/selectGenderFragment"
-        android:name="com.example.spotifycopy.view.ui.selectGenderFargment.SelectGenderFragment"
-        android:label="fragment_select__gender"
-        tools:layout="@layout/fragment_select_gender" >
-        <action
-            android:id="@+id/action_selectGenderFragment_to_startListeningFragment2"
-            app:destination="@id/startListeningFragmentArtists" />
-    </fragment>
-    <fragment
-        android:id="@+id/startListeningFragmentEnd"
-        android:name="com.example.spotifycopy.view.ui.startListeningFragmentEnd.StartListeningFragmentEnd"
-        android:label="fragment_start_listening"
-        tools:layout="@layout/fragment_start_listening_end" >
-        <action
-            android:id="@+id/action_startListeningFragmentEnd_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/login"
-        android:name="com.example.spotifycopy.view.ui.loginFargment.Login"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_login_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:popUpTo="@id/login" />
-    </fragment>
-    <fragment
-        android:id="@+id/startListeningFragmentArtists"
-        android:name="com.example.spotifycopy.view.ui.startListeningFragmentArtists.StartListeningFragmentArtists"
-        android:label="fragment_start_listening_artists"
-        tools:layout="@layout/fragment_start_listening_artists" >
-
-        <action
-            android:id="@+id/action_startListeningFragmentArtists_to_startListeningFragment2"
-            app:destination="@id/startListeningFragmentEnd" />
-    </fragment>
     <fragment
         android:id="@+id/songFragment"
         android:name="com.example.spotifycopy.view.ui.songFragment.SongFragment"
         android:label="fragment_song"
         tools:layout="@layout/fragment_song" />
-    <fragment
-        android:id="@+id/insidePlaylistFragment"
-        android:name="com.example.spotifycopy.view.ui.insidePlaylistFragment.InsidePlaylistFragment"
-        android:label="fragment_inside_playlist"
-        tools:layout="@layout/fragment_inside_playlist" />
 </navigation>
