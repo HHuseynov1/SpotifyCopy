@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entites.Song
+import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.FragmentSongBinding
 import com.google.firebase.Firebase
 import com.google.firebase.storage.FirebaseStorage

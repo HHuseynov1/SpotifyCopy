@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spotifycopy.data.entites.Song
+import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.data.remote.MusicDatabase
 import kotlinx.coroutines.launch
 
