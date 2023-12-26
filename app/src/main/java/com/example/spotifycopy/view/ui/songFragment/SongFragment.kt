@@ -102,7 +102,7 @@ class SongFragment : Fragment() {
 
         initializeMediaPlayer(songIndex)
 
-        Glide.with(requireContext()).load(songList[songIndex].imageUrl).into(binding.imageView)
+        Glide.with(requireContext()).load(songList[songIndex].imageUrl).into(binding.songImage)
     }
 
     private fun initializeMediaPlayer(songIndex: Int) {
