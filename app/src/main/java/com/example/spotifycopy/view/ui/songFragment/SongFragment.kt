@@ -1,60 +1,128 @@
 package com.example.spotifycopy.view.ui.songFragment
 
+import android.app.ProgressDialog
+import android.graphics.BitmapFactory
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.example.spotifycopy.R
+import com.example.spotifycopy.data.entites.Song
+import com.example.spotifycopy.databinding.FragmentSongBinding
+import com.google.firebase.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.storage
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.IOException
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SongFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class SongFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentSongBinding
+
+    private lateinit var mediaPlayer: MediaPlayer
+
+    private lateinit var songList: List<Song>
+
+    private var currentSongIndex = 0
+
+    private val viewModel: SongViewModel by viewModels()
+
+//    @Inject
+//    lateinit var glide: RequestManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_song, container, false)
+    ): View {
+        binding = FragmentSongBinding.inflate(inflater, container, false)
+
+        mediaPlayer = MediaPlayer()
+
+        songList = ArrayList()
+
+        viewModel.mutableLiveData.observe(viewLifecycleOwner) {
+            songList = it
+            if(songList.isNotEmpty()){
+                updateUI(currentSongIndex)
+            }
+        }
+
+        binding.button.setOnClickListener {
+            togglePlayback()
+        }
+
+        binding.btnskip.setOnClickListener {
+            skipToNextSong()
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SongFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SongFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun togglePlayback() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.pause()
+            binding.button.setBackgroundResource(R.drawable.baseline_play_circle_24)
+        }
+        else if(currentSongIndex == 0){
+            binding.button.setBackgroundResource(R.drawable.baseline_play_circle_24)
+            binding.button.setOnClickListener {
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.pause()
+                    binding.button.setBackgroundResource(R.drawable.baseline_play_circle_24)
+                }else {
+                    mediaPlayer.start()
+                    binding.button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
                 }
             }
+        }
+        else {
+            mediaPlayer.start()
+            binding.button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+        }
+    }
+
+    private fun skipToNextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songList.size
+        updateUI(currentSongIndex)
+    }
+
+    private fun updateUI(songIndex: Int) {
+
+        initializeMediaPlayer(songIndex)
+
+        Glide.with(requireContext()).load(songList[songIndex].imageUrl).into(binding.imageView)
+    }
+
+    private fun initializeMediaPlayer(songIndex: Int) {
+        mediaPlayer.reset()
+        mediaPlayer.setAudioAttributes(
+            AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+        )
+
+        mediaPlayer.setDataSource(songList[songIndex].songUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            binding.button.visibility = View.VISIBLE
+            togglePlayback()
+
+            mediaPlayer.setOnErrorListener { _, what, extra ->
+                println("MediaPlayer error: what=$what, extra=$extra")
+                false
+            }
+        }
     }
 }
