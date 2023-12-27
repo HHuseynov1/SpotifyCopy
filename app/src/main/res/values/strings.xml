@@ -41,5 +41,6 @@
     <string name="create_an_account">Create an account</string>
     <string name="use_at_least_8_characters">Use at least 8 characters</string>
     <string name="enter_your_password">Enter your password</string>
+    <string name="_0_00">0:00</string>
 
 </resources>

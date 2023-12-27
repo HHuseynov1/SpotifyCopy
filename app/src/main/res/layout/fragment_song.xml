@@ -25,7 +25,6 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginStart="-5dp"
                     android:background="@drawable/baseline_keyboard_arrow_down_24"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -50,8 +49,7 @@
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="0.17000002"
-        >
+        app:layout_constraintVertical_bias="0.17000002">
 
         <ImageView
             android:id="@+id/songImage"
@@ -98,6 +96,45 @@
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/txtArtistName" />
+
+    <TextView
+        android:id="@+id/txtTimeStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0_00"
+        app:layout_constraintStart_toStartOf="@id/seekBar"
+        app:layout_constraintTop_toBottomOf="@id/seekBar" />
+
+    <TextView
+        android:id="@+id/txtTimeEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0_00"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@id/seekBar" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnShuffle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/baseline_shuffle_24_white"
+        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/txtTimeStart" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRepeat"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/rounded_repeat_24"
+        app:layout_constraintBottom_toBottomOf="@+id/btnShuffle"
+        app:layout_constraintEnd_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toTopOf="@+id/btnShuffle" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="64dp"
+        android:layout_height="64dp"
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
