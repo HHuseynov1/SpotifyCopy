@@ -68,7 +68,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.selectGenderFragment,
                 R.id.startListeningFragmentArtists,
                 R.id.startListeningFragmentEnd,
-                R.id.login -> {
+                R.id.login,
+                R.id.songFragment-> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
 

@@ -1,32 +1,23 @@
 package com.example.spotifycopy.view.ui.songFragment
 
-import android.app.ProgressDialog
-import android.graphics.BitmapFactory
+import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.example.spotifycopy.R
-import com.example.spotifycopy.data.entites.Song
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.FragmentSongBinding
-import com.google.firebase.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.storage
-import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.io.IOException
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class SongFragment : Fragment() {
 
     private lateinit var binding: FragmentSongBinding
@@ -38,6 +29,9 @@ class SongFragment : Fragment() {
     private var currentSongIndex = 0
 
     private val viewModel: SongViewModel by viewModels()
+
+    private var initialTouchX: Float = 0f
+    private var cardViewOriginalX: Float = 0f
 
 //    @Inject
 //    lateinit var glide: RequestManager
@@ -54,7 +48,7 @@ class SongFragment : Fragment() {
 
         viewModel.mutableLiveData.observe(viewLifecycleOwner) {
             songList = it
-            if(songList.isNotEmpty()){
+            if (songList.isNotEmpty()) {
                 updateUI(currentSongIndex)
             }
         }
@@ -67,6 +61,10 @@ class SongFragment : Fragment() {
             skipToNextSong()
         }
 
+        binding.btnPrevious.setOnClickListener {
+            skipToPreviousSong()
+        }
+
         return binding.root
     }
 
@@ -74,22 +72,29 @@ class SongFragment : Fragment() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
             binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
-        }
-        else if(currentSongIndex == 0){
+        } else if (currentSongIndex == 0) {
             binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
             binding.btnPlay.setOnClickListener {
                 if (mediaPlayer.isPlaying) {
                     mediaPlayer.pause()
                     binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
-                }else {
+                } else {
                     mediaPlayer.start()
                     binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
                 }
             }
-        }
-        else {
+        } else {
             mediaPlayer.start()
             binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+        }
+    }
+
+    private fun skipToPreviousSong() {
+        if (currentSongIndex > 0) {
+            currentSongIndex--
+            updateUI(currentSongIndex)
+        } else {
+            currentSongIndex = 0
         }
     }
 
@@ -99,10 +104,31 @@ class SongFragment : Fragment() {
     }
 
     private fun updateUI(songIndex: Int) {
+        val translationX = 1000f
 
-        initializeMediaPlayer(songIndex)
+        // Animate the translation of the CardView
+        binding.cardView.translationX = translationX
+        binding.cardView.alpha = 0f
 
-        Glide.with(requireContext()).load(songList[songIndex].imageUrl).into(binding.songImage)
+        binding.seekBar.progress = mediaPlayer.currentPosition
+
+        binding.cardView.animate()
+            .translationX(0f)
+            .alpha(1f)
+            .setDuration(500) // Adjust the duration as needed
+            .withEndAction {
+                // Load the new image with Glide
+                Glide.with(requireContext())
+                    .load(songList[songIndex].imageUrl)
+                    .into(binding.songImage)
+
+                binding.txtSongName.text = songList[songIndex].title
+                binding.txtArtistName.text = songList[songIndex].artist
+
+                // Initialize media player if needed
+                initializeMediaPlayer(songIndex)
+            }
+            .start()
     }
 
     private fun initializeMediaPlayer(songIndex: Int) {

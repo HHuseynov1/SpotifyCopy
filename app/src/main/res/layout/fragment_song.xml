@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5111111"
+    android:background="@drawable/gradient_for_song"
     tools:context=".view.ui.songFragment.SongFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -59,7 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/gradient" />
+            android:src="@drawable/gradient"
+            />
 
     </androidx.cardview.widget.CardView>
 
@@ -67,7 +68,7 @@
         android:id="@+id/txtSongName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:text="@string/examplename"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -86,8 +87,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/appCompatButton3"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:background="@drawable/baseline_add_circle_outline_24"
         app:layout_constraintBottom_toBottomOf="@+id/txtArtistName"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
@@ -98,6 +99,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:thumbTint="@color/white"
+        android:progressTint="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/txtArtistName" />
@@ -170,6 +173,7 @@
         android:id="@+id/btnList"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/round_dehaze_24"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
@@ -188,6 +192,7 @@
         android:id="@+id/btnDevices"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/baseline_devices_24"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
@@ -198,14 +203,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.85" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

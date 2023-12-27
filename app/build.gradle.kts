@@ -53,6 +53,9 @@ dependencies {
 
     implementation("com.google.firebase:firebase-analytics")
 
+    //Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+
     //Splash Screen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
