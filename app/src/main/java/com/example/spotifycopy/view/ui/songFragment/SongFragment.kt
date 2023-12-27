@@ -59,11 +59,11 @@ class SongFragment : Fragment() {
             }
         }
 
-        binding.button.setOnClickListener {
+        binding.btnPlay.setOnClickListener {
             togglePlayback()
         }
 
-        binding.btnskip.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             skipToNextSong()
         }
 
@@ -73,23 +73,23 @@ class SongFragment : Fragment() {
     private fun togglePlayback() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-            binding.button.setBackgroundResource(R.drawable.baseline_play_circle_24)
+            binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
         }
         else if(currentSongIndex == 0){
-            binding.button.setBackgroundResource(R.drawable.baseline_play_circle_24)
-            binding.button.setOnClickListener {
+            binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
+            binding.btnPlay.setOnClickListener {
                 if (mediaPlayer.isPlaying) {
                     mediaPlayer.pause()
-                    binding.button.setBackgroundResource(R.drawable.baseline_play_circle_24)
+                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
                 }else {
                     mediaPlayer.start()
-                    binding.button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
                 }
             }
         }
         else {
             mediaPlayer.start()
-            binding.button.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+            binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
         }
     }
 
@@ -117,7 +117,7 @@ class SongFragment : Fragment() {
         mediaPlayer.setDataSource(songList[songIndex].songUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            binding.button.visibility = View.VISIBLE
+            binding.btnPlay.visibility = View.VISIBLE
             togglePlayback()
 
             mediaPlayer.setOnErrorListener { _, what, extra ->
