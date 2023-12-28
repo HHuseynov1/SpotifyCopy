@@ -1,16 +1,13 @@
 package com.example.spotifycopy.view.ui.songFragment
 
-import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -30,17 +27,16 @@ class SongFragment : Fragment() {
 
     private val viewModel: SongViewModel by viewModels()
 
-    private var initialTouchX: Float = 0f
-    private var cardViewOriginalX: Float = 0f
-
-//    @Inject
-//    lateinit var glide: RequestManager
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSongBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         mediaPlayer = MediaPlayer()
 
@@ -65,7 +61,6 @@ class SongFragment : Fragment() {
             skipToPreviousSong()
         }
 
-        return binding.root
     }
 
     private fun togglePlayback() {
@@ -106,18 +101,19 @@ class SongFragment : Fragment() {
     private fun updateUI(songIndex: Int) {
         val translationX = 1000f
 
-        // Animate the translation of the CardView
         binding.cardView.translationX = translationX
         binding.cardView.alpha = 0f
 
-        binding.seekBar.progress = mediaPlayer.currentPosition
+        Handler(Looper.getMainLooper()).postDelayed({
+            initialiseSeekbar()
+        }, 1000)
 
         binding.cardView.animate()
             .translationX(0f)
             .alpha(1f)
-            .setDuration(500) // Adjust the duration as needed
+            .setDuration(500)
             .withEndAction {
-                // Load the new image with Glide
+
                 Glide.with(requireContext())
                     .load(songList[songIndex].imageUrl)
                     .into(binding.songImage)
@@ -125,7 +121,6 @@ class SongFragment : Fragment() {
                 binding.txtSongName.text = songList[songIndex].title
                 binding.txtArtistName.text = songList[songIndex].artist
 
-                // Initialize media player if needed
                 initializeMediaPlayer(songIndex)
             }
             .start()
@@ -151,5 +146,34 @@ class SongFragment : Fragment() {
                 false
             }
         }
+    }
+
+    private fun initialiseSeekbar() {
+        binding.seekBar.max = mediaPlayer.duration
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                try {
+                    binding.seekBar.progress = mediaPlayer.currentPosition
+
+                    val currentDurationInMillis = mediaPlayer.currentPosition
+                    val minutes = (currentDurationInMillis / 1000) / 60
+                    val seconds = (currentDurationInMillis / 1000) % 60
+                    val formattedCurrentDuration = String.format("%02d:%02d", minutes, seconds)
+
+                    val durationInMillis = mediaPlayer.duration
+                    val dMinutes = (durationInMillis / 1000) / 60
+                    val dSeconds = (durationInMillis / 1000) % 60
+                    val formattedDuration = String.format("%02d:%02d", dMinutes, dSeconds)
+
+                    binding.txtTimeStart.text = formattedCurrentDuration
+                    binding.txtTimeEnd.text = formattedDuration
+                    handler.postDelayed(this, 1000)
+                } catch (e: java.lang.Exception) {
+                    binding.seekBar.progress = 0
+                }
+            }
+        }, 0)
     }
 }
