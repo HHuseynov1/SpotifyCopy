@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.spotifycopy.data.entities.Genders
 import com.example.spotifycopy.databinding.SelectGenderItemBinding
 
 class SelectGenderAdapter (private val onClick : (btnClick : SelectGenderItemBinding) -> Unit) : RecyclerView.Adapter<SelectGenderAdapter.GenderViewHolder>() {
-
 
     private val genderCallBack = object : DiffUtil.ItemCallback<Genders>() {
         override fun areItemsTheSame(oldItem: Genders, newItem: Genders): Boolean {

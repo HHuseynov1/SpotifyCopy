@@ -99,29 +99,22 @@ class SongFragment : Fragment() {
     }
 
     private fun updateUI(songIndex: Int) {
-        val translationX = 1000f
-
-        binding.cardView.translationX = translationX
+        binding.cardView.translationX = 1000f
         binding.cardView.alpha = 0f
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            initialiseSeekbar()
-        }, 1000)
+        initializeMediaPlayer(songIndex)
 
         binding.cardView.animate()
             .translationX(0f)
             .alpha(1f)
             .setDuration(500)
             .withEndAction {
-
                 Glide.with(requireContext())
                     .load(songList[songIndex].imageUrl)
                     .into(binding.songImage)
 
                 binding.txtSongName.text = songList[songIndex].title
                 binding.txtArtistName.text = songList[songIndex].artist
-
-                initializeMediaPlayer(songIndex)
             }
             .start()
     }
@@ -135,12 +128,13 @@ class SongFragment : Fragment() {
                 .build()
         )
 
+
         mediaPlayer.setDataSource(songList[songIndex].songUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
+            initialiseSeekbar()
             binding.btnPlay.visibility = View.VISIBLE
             togglePlayback()
-
             mediaPlayer.setOnErrorListener { _, what, extra ->
                 println("MediaPlayer error: what=$what, extra=$extra")
                 false

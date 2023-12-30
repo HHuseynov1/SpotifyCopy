@@ -34,7 +34,7 @@
         android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/nav_menu"
-        android:background="#00000000"
+        android:background="@drawable/gradient_for_bottom"
         app:itemIconTint="@android:color/darker_gray"
         app:itemTextColor="@android:color/darker_gray"
         />

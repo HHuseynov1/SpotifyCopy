@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spotifycopy.R
+import com.example.spotifycopy.data.entities.Genders
 
 import com.example.spotifycopy.databinding.FragmentSelectGenderBinding
 import com.example.spotifycopy.databinding.SelectGenderItemBinding
