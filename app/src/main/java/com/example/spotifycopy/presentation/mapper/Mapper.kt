@@ -1,9 +1,11 @@
 package com.example.spotifycopy.presentation.mapper
 
 import com.example.spotifycopy.data.entities.Artists
+import com.example.spotifycopy.data.entities.Categories
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.data.entities.User
 import com.example.spotifycopy.presentation.models.ArtistsModel
+import com.example.spotifycopy.presentation.models.CategoryModel
 import com.example.spotifycopy.presentation.models.SongModel
 import com.example.spotifycopy.presentation.models.UserModel
 
@@ -29,10 +31,17 @@ object Mapper {
     fun List<User>.toUser() = map {
         UserModel(
             it.id,
-            it.imgPlaylist,
             it.imgProfile,
+            it.imgPlaylist,
             it.playlistName,
             it.userName
+        )
+    }
+
+    fun List<Categories>.toCategoriesList() = map {
+        CategoryModel(
+            it.category,
+            it.id
         )
     }
 

@@ -10,8 +10,9 @@ import com.example.spotifycopy.data.entities.Genders
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.InsidePlaylistItemBinding
 import com.example.spotifycopy.presentation.models.SongModel
+import com.example.spotifycopy.presentation.models.UserModel
 
-class InsidePlaylistAdapter :
+class InsidePlaylistAdapter:
     RecyclerView.Adapter<InsidePlaylistAdapter.InsidePlaylistViewHolder>() {
 
     private val songCallBack = object : DiffUtil.ItemCallback<SongModel>() {

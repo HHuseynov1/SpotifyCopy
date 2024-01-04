@@ -6,21 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentInsidePlaylistBinding
+import com.example.spotifycopy.presentation.models.UserModel
 
 class InsidePlaylistFragment : Fragment() {
 
-    lateinit var binding : FragmentInsidePlaylistBinding
+    lateinit var binding: FragmentInsidePlaylistBinding
     private val myAdapter by lazy { InsidePlaylistAdapter() }
-    private val viewModel : InsidePlaylistViewModel by viewModels()
+    private val viewModel: InsidePlaylistViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentInsidePlaylistBinding.inflate(inflater,container,false)
+        binding = FragmentInsidePlaylistBinding.inflate(inflater, container, false)
 
         binding.rvPlaylist.adapter = myAdapter
         binding.rvPlaylist.layoutManager = LinearLayoutManager(requireContext())
@@ -32,11 +36,25 @@ class InsidePlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         addItems()
+
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        imgPlaylist()
     }
 
-    private fun addItems(){
-        viewModel.mutableLiveData.observe(viewLifecycleOwner){
+    private fun addItems() {
+        viewModel.mutableLiveDataSong.observe(viewLifecycleOwner) {
             myAdapter.addItems(it)
+        }
+    }
+
+    private fun imgPlaylist() {
+        viewModel.mutableLiveDataUser.observe(viewLifecycleOwner) {
+            for (item in it) {
+                Glide.with(requireContext()).load(item.imgPlaylist).into(binding.imgPlaylist)
+            }
         }
     }
 }

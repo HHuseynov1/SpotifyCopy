@@ -35,7 +35,7 @@ class PlaylistItemAdapter(
 
         init {
             itemView.setOnClickListener {
-                insideFragment
+                insideFragment.invoke()
             }
         }
 

@@ -8,11 +8,11 @@ import kotlinx.coroutines.tasks.await
 
 class UserDatabase {
     private val fireStore = FirebaseFirestore.getInstance()
-    private val songCollection = fireStore.collection(Constants.USER_COLLECTION)
+    private val userCollection = fireStore.collection(Constants.USER_COLLECTION)
 
     suspend fun getUser():List<User>{
         return try{
-            songCollection.get().await().toObjects(User::class.java)
+            userCollection.get().await().toObjects(User::class.java)
         }catch (e:Exception){
             emptyList()
         }

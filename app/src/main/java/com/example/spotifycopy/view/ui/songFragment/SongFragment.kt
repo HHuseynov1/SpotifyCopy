@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.FragmentSongBinding
+import com.example.spotifycopy.presentation.models.SongModel
 
 class SongFragment : Fragment() {
 
@@ -21,7 +22,7 @@ class SongFragment : Fragment() {
 
     private lateinit var mediaPlayer: MediaPlayer
 
-    private lateinit var songList: List<Song>
+    private lateinit var songList: List<SongModel>
 
     private var currentSongIndex = 0
 

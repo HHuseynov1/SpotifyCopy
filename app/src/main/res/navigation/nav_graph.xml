@@ -3,13 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/libraryFragment">
+    app:startDestination="@id/searchFragment">
 
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.spotifycopy.view.ui.searchFragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchInsideFragment"
+            app:destination="@id/searchInsideFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/libraryFragment"
         android:name="com.example.spotifycopy.view.ui.libraryFragment.LibraryFragment"
@@ -99,4 +104,9 @@
         android:name="com.example.spotifycopy.view.ui.insidePlaylistFragment.InsidePlaylistFragment"
         android:label="fragment_inside_playlist"
         tools:layout="@layout/fragment_inside_playlist" />
+    <fragment
+        android:id="@+id/searchInsideFragment"
+        android:name="com.example.spotifycopy.view.ui.searchFragment.SearchInsideFragment.SearchInsideFragment"
+        android:label="fragment_search_inside"
+        tools:layout="@layout/fragment_search_inside" />
 </navigation>
