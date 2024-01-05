@@ -1,5 +1,6 @@
 package com.example.spotifycopy
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -9,13 +10,13 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    private val _isReady = MutableStateFlow(false)
-    val isReady = _isReady.asStateFlow()
+    private val _isLoading = MutableLiveData(true)
+    val isLoading = _isLoading
 
     init{
         viewModelScope.launch {
-            delay(3000)
-            _isReady.value = true
+            delay(2000)
+            _isLoading.value = false
         }
     }
 

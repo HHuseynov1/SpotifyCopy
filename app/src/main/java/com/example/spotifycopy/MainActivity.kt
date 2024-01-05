@@ -28,19 +28,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                !viewModel.isReady.value
+            setKeepOnScreenCondition{
+                viewModel.isLoading.value as Boolean
             }
         }
-//        val w = window
-//        w.setFlags(
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-//        )
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         bottomView()
         navigationViewAccess()

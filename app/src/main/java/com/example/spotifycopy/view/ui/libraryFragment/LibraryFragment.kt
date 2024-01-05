@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentLibraryBinding
@@ -32,10 +33,14 @@ class LibraryFragment : Fragment() {
 
         val mainActivity = activity as MainActivity
 
-        binding.profileImage.setImageResource(R.drawable.spotifylogo)
-
         binding.rvPlaylist.adapter = myAdapter
         binding.rvPlaylist.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.mutableLiveData.observe(viewLifecycleOwner){
+            for(i in it){
+                Glide.with(requireContext()).load(i.imgProfile).into(binding.profileImage)
+            }
+        }
 
         binding.profileImage.setOnClickListener {
             mainActivity.openDrawer()

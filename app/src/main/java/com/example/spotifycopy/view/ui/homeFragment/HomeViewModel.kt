@@ -1,4 +1,4 @@
-package com.example.spotifycopy.view.ui.libraryFragment
+package com.example.spotifycopy.view.ui.homeFragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,12 +8,11 @@ import com.example.spotifycopy.presentation.mapper.Mapper.toUser
 import com.example.spotifycopy.presentation.models.UserModel
 import kotlinx.coroutines.launch
 
-class LibraryPlaylistViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
     private val _mutableLiveData = MutableLiveData<List<UserModel>>()
     val mutableLiveData get() = _mutableLiveData
 
-
-    init {
+    init{
         viewModelScope.launch {
             val list = SpotifyDatabase.getUser().toUser()
             _mutableLiveData.value = list

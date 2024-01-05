@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.bumptech.glide.Glide
 import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Categories
@@ -21,7 +22,7 @@ class SearchFragment : Fragment() {
 
     private val myAdapter by lazy { CategoriesAdapter() }
 
-    private val viewModel : SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +31,12 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater,container,false)
 
         val mainActivity = activity as MainActivity
+
+        viewModel.mutableLiveDataUser.observe(viewLifecycleOwner){
+            for(i in it){
+                Glide.with(requireContext()).load(i.imgProfile).into(binding.profileImage)
+            }
+        }
 
         binding.profileImage.setOnClickListener {
             mainActivity.openDrawer()
@@ -61,7 +68,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun addItems(){
-        viewModel.mutableLiveData.observe(viewLifecycleOwner){
+        viewModel.mutableLiveDataCategory.observe(viewLifecycleOwner){
                 myAdapter.setImages(it)
         }
     }

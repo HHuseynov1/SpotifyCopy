@@ -1,24 +1,33 @@
 package com.example.spotifycopy.view.ui.searchFragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spotifycopy.data.remote.CategoryDatabase
+import com.example.spotifycopy.data.remote.SpotifyDatabase
 import com.example.spotifycopy.presentation.mapper.Mapper.toCategoriesList
+import com.example.spotifycopy.presentation.mapper.Mapper.toUser
 import com.example.spotifycopy.presentation.models.CategoryModel
+import com.example.spotifycopy.presentation.models.UserModel
 import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
-    private val _mutableLiveData = MutableLiveData<List<CategoryModel>>()
-    val mutableLiveData get() = _mutableLiveData
+    private val _mutableLiveDataCategory = MutableLiveData<List<CategoryModel>>()
+    val mutableLiveDataCategory get() = _mutableLiveDataCategory
 
-    private val categoryDatabase = CategoryDatabase()
+    private val _mutableLiveDataUser = MutableLiveData<List<UserModel>>()
+    val mutableLiveDataUser get() = _mutableLiveDataUser
 
     init {
         viewModelScope.launch {
-            val list = categoryDatabase.getAllCategories().toCategoriesList()
-            _mutableLiveData.value = list
+            val list = SpotifyDatabase.getAllCategories().toCategoriesList()
+            _mutableLiveDataCategory.value = list
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            val list = SpotifyDatabase.getUser().toUser()
+            _mutableLiveDataUser.value = list
         }
     }
 }

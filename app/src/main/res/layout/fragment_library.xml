@@ -31,7 +31,6 @@
                    android:id="@+id/profileImage"
                    android:layout_width="32dp"
                    android:layout_height="32dp"
-                   android:src="@drawable/spotifylogo"
                    tools:ignore="MissingConstraints" />
 
                <TextView
