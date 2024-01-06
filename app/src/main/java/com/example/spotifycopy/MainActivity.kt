@@ -56,13 +56,13 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
-//                R.id.getStartedFragment,
-//                R.id.createEmailFragment,
-//                R.id.createPasswordFargment,
-//                R.id.selectGenderFragment,
-//                R.id.startListeningFragmentArtists,
-//                R.id.startListeningFragmentEnd,
-//                R.id.login,
+                R.id.getStartedFragment,
+                R.id.createEmailFragment,
+                R.id.createPasswordFargment,
+                R.id.selectGenderFragment,
+                R.id.startListeningFragmentArtists,
+                R.id.startListeningFragmentEnd,
+                R.id.login,
                 R.id.songFragment-> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
@@ -117,15 +117,15 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-//                R.id.getStartedFragment,
-//                R.id.createEmailFragment,
-//                R.id.createPasswordFargment,
-//                R.id.selectGenderFragment,
-//                R.id.startListeningFragmentArtists,
-//                R.id.startListeningFragmentEnd,
-//                R.id.login -> {
-//                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-//                }
+                R.id.getStartedFragment,
+                R.id.createEmailFragment,
+                R.id.createPasswordFargment,
+                R.id.selectGenderFragment,
+                R.id.startListeningFragmentArtists,
+                R.id.startListeningFragmentEnd,
+                R.id.login -> {
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                }
 
                 R.id.homeFragment,
                 R.id.searchFragment,
