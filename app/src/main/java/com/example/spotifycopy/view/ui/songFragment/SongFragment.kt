@@ -33,6 +33,13 @@ class SongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSongBinding.inflate(inflater, container, false)
+
+        val selectedPosition = arguments?.getInt("selectedPosition")
+
+        selectedPosition?.let {
+            currentSongIndex = it
+        }
+
         return binding.root
     }
 

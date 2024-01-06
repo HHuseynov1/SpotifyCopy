@@ -17,7 +17,7 @@ class InsidePlaylistFragment : Fragment() {
 
     lateinit var binding: FragmentInsidePlaylistBinding
     private val myAdapter by lazy { InsidePlaylistAdapter(
-        currentSong = {position -> }
+        currentSong = {position -> onItemClick(position)}
     ) }
     private val viewModel: InsidePlaylistViewModel by viewModels()
 
@@ -61,5 +61,7 @@ class InsidePlaylistFragment : Fragment() {
     }
 
     private fun onItemClick(position : Int){
+        val action = InsidePlaylistFragmentDirections.actionInsidePlaylistFragmentToSongFragment(position)
+        findNavController().navigate(action)
     }
 }
