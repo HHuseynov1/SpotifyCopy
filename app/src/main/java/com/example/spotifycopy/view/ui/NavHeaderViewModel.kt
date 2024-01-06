@@ -11,7 +11,7 @@ class NavHeaderViewModel : ViewModel() {
     private val _mutableLiveData = MutableLiveData<List<UserModel>>()
     val mutableLiveData get() = _mutableLiveData
 
-    private val userDatabase = UserDatabase()
+    private val userDatabase = yCopUserDatabase()
 
     init {
         viewModelScope.launch {

@@ -12,7 +12,9 @@ import com.example.spotifycopy.databinding.InsidePlaylistItemBinding
 import com.example.spotifycopy.presentation.models.SongModel
 import com.example.spotifycopy.presentation.models.UserModel
 
-class InsidePlaylistAdapter:
+class InsidePlaylistAdapter(
+    private val currentSong: (Int) -> Unit
+):
     RecyclerView.Adapter<InsidePlaylistAdapter.InsidePlaylistViewHolder>() {
 
     private val songCallBack = object : DiffUtil.ItemCallback<SongModel>() {
@@ -29,6 +31,13 @@ class InsidePlaylistAdapter:
 
     inner class InsidePlaylistViewHolder(private val binding: InsidePlaylistItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+            init {
+                itemView.setOnClickListener {
+                    currentSong(bindingAdapterPosition)
+                }
+            }
+
         fun bind(item: SongModel) {
             binding.txtArtistName.text = item.artist
             binding.txtSongName.text = item.title
