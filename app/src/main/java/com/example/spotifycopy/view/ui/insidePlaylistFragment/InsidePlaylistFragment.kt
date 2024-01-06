@@ -16,7 +16,9 @@ import com.example.spotifycopy.presentation.models.UserModel
 class InsidePlaylistFragment : Fragment() {
 
     lateinit var binding: FragmentInsidePlaylistBinding
-    private val myAdapter by lazy { InsidePlaylistAdapter() }
+    private val myAdapter by lazy { InsidePlaylistAdapter(
+        currentSong = {position -> }
+    ) }
     private val viewModel: InsidePlaylistViewModel by viewModels()
 
 
@@ -56,5 +58,8 @@ class InsidePlaylistFragment : Fragment() {
                 Glide.with(requireContext()).load(item.imgPlaylist).into(binding.imgPlaylist)
             }
         }
+    }
+
+    private fun onItemClick(position : Int){
     }
 }
