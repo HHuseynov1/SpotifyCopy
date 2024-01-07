@@ -43,7 +43,7 @@ class InsidePlaylistFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        imgPlaylist()
+        playlist()
     }
 
     private fun addItems() {
@@ -52,10 +52,13 @@ class InsidePlaylistFragment : Fragment() {
         }
     }
 
-    private fun imgPlaylist() {
+    private fun playlist() {
         viewModel.mutableLiveDataUser.observe(viewLifecycleOwner) {
             for (item in it) {
                 Glide.with(requireContext()).load(item.imgPlaylist).into(binding.imgPlaylist)
+                binding.txtPlaylistName.text = item.playlistName
+                binding.txtUserName.text = item.userName
+                Glide.with(requireContext()).load(item.imgProfile).into(binding.profileImage)
             }
         }
     }

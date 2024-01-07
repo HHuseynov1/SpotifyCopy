@@ -29,10 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         installSplashScreen().apply {
-            setKeepOnScreenCondition{
+            setKeepOnScreenCondition {
                 viewModel.isLoading.value as Boolean
             }
         }
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.startListeningFragmentArtists,
                 R.id.startListeningFragmentEnd,
                 R.id.login,
-                R.id.songFragment-> {
+                R.id.songFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
 

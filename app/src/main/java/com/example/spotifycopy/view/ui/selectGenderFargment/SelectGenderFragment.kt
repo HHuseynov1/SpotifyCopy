@@ -35,6 +35,10 @@ class SelectGenderFragment : Fragment() {
         binding.rvGender.adapter = myGenderAdapter
         binding.rvGender.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, true)
 
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         addItems()
     }
 

@@ -71,59 +71,51 @@
 
        </Toolbar>
    </com.google.android.material.appbar.AppBarLayout>
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="match_parent"
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipPlaylist"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="#2A2A2A"
+        android:text="@string/playlist"
+        android:textColor="@color/white"
+        app:chipCornerRadius="50dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-        <RadioButton
-            android:id="@+id/btnPlaylist"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="15dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/radio_button"
-            android:button="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/playlist"
-            android:textColor="#FFFFFF" />
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chipArtists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2A2A2A"
+        android:text="@string/artist"
+        android:textColor="@color/white"
+        app:chipCornerRadius="50dp"
+        android:layout_marginStart="10dp"
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/radio_button"
-            android:button="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/artist"
-            android:textColor="#FFFFFF" />
-    </RadioGroup>
+        app:layout_constraintStart_toEndOf="@id/chipPlaylist"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+        app:layout_constraintTop_toBottomOf="@+id/chipPlaylist">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRecents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#0000"
-                android:drawableLeft="@drawable/baseline_swap_vert_24"
                 android:text="@string/recents"
+                android:drawableLeft="@drawable/baseline_swap_vert_24"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -139,7 +131,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPlaylist"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 app:layout_constraintBottom_toTopOf="@id/rvArtist"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -151,7 +143,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvArtist"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 app:layout_constraintBottom_toTopOf="@id/btnAddArtists"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -54,6 +54,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txtPlaylistName" />
 
         <TextView
+            android:id="@+id/txtUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -87,8 +88,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDownload"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/baseline_arrow_circle_down_24"
             app:layout_constraintStart_toStartOf="@+id/profileImage"
@@ -96,9 +97,9 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAddUser"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/outline_person_add_24"
             app:layout_constraintBottom_toBottomOf="@+id/btnDownload"
             app:layout_constraintStart_toEndOf="@+id/btnDownload"
@@ -106,9 +107,9 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnShare"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/outline_share_24"
             app:layout_constraintBottom_toBottomOf="@+id/btnDownload"
             app:layout_constraintStart_toEndOf="@+id/btnAddUser"
@@ -116,18 +117,18 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnMore"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="10dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
             android:background="@drawable/baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="@+id/btnDownload"
             app:layout_constraintStart_toEndOf="@+id/btnShare"
             app:layout_constraintTop_toTopOf="@+id/btnDownload" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/appCompatButton2"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:id="@+id/btnShuffle"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/baseline_shuffle_24"
             app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
@@ -147,9 +148,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="#1C1C1C"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:background="#1C1C1C"
             android:padding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnMore">
@@ -196,10 +197,20 @@
                 android:id="@+id/rvPlaylist"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/inside_playlist_item"
+                app:layout_constraintBottom_toTopOf="@+id/guideline5"
                 app:layout_constraintEnd_toEndOf="@+id/btnAddPlaylist"
                 app:layout_constraintStart_toStartOf="@+id/btnAddPlaylist"
-                app:layout_constraintTop_toBottomOf="@+id/btnAddPlaylist" />
+                app:layout_constraintTop_toBottomOf="@+id/btnAddPlaylist"
+                tools:listitem="@layout/inside_playlist_item" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.85" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
