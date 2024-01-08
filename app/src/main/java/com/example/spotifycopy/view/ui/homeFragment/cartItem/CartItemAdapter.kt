@@ -1,20 +1,23 @@
-package com.example.spotifycopy.view.ui.cartItemFragment
+package com.example.spotifycopy.view.ui.homeFragment.cartItem
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.CartItemBinding
+import com.example.spotifycopy.presentation.models.CartItemModel
 
 class CartItemAdapter : RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>() {
 
-    private val cartItemCallBack = object : DiffUtil.ItemCallback<CartItem>() {
-        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.id == newItem.id
+    private val cartItemCallBack = object : DiffUtil.ItemCallback<CartItemModel>() {
+        override fun areItemsTheSame(oldItem: CartItemModel, newItem: CartItemModel): Boolean {
+            return oldItem.titleSong == newItem.titleSong
         }
 
-        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+        override fun areContentsTheSame(oldItem: CartItemModel, newItem: CartItemModel): Boolean {
             return oldItem == newItem
         }
     }
@@ -22,8 +25,12 @@ class CartItemAdapter : RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>
     private val diffUtil = AsyncListDiffer(this, cartItemCallBack)
 
     inner class CartItemViewHolder(private val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : CartItem){
-
+        fun bind(item : CartItemModel) {
+            binding.txtName.text = item.titleSong
+            Glide.with(itemView.context).load(item.imageSong).into(binding.cardImage)
+            binding.txtName.text = item.titlePlaylist
+            Glide.with(itemView.context).load(item.imagePlaylist).into(binding.cardImage)
+            Log.e("item",item.toString())
         }
     }
 
@@ -39,5 +46,7 @@ class CartItemAdapter : RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>
     override fun onBindViewHolder(holder: CartItemViewHolder, position: Int) {
         holder.bind(diffUtil.currentList[position])
     }
+
+    fun addItems(cart : List<CartItemModel>) = diffUtil.submitList(cart)
 
 }

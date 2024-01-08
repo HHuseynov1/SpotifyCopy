@@ -4,30 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="5dp"
     android:backgroundTint="#2A2A2A"
     app:cardCornerRadius="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/cardImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:scaleType="centerCrop"
             android:src="@android:color/holo_red_dark"
             tools:ignore="MissingConstraints" />
 
         <TextView
+            android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
             android:text="@string/examplename"
             android:textColor="#ffffff"
-            android:textSize="18dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.17"
             app:layout_constraintStart_toEndOf="@id/cardImage"
             app:layout_constraintTop_toTopOf="parent" />
 

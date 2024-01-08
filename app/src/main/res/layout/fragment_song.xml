@@ -23,19 +23,20 @@
                 android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:background="@drawable/baseline_keyboard_arrow_down_24"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/baseline_more_vert_24_white"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
 
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </Toolbar>
 
@@ -46,8 +47,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,8 +86,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/appCompatButton3"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="@drawable/baseline_add_circle_outline_24"
         app:layout_constraintBottom_toBottomOf="@+id/txtArtistName"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
@@ -123,8 +122,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnShuffle"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:background="@drawable/baseline_shuffle_24_white"
         app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
         app:layout_constraintStart_toStartOf="@id/cardView"
@@ -162,8 +161,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRepeat"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:background="@drawable/rounded_repeat_24"
         app:layout_constraintBottom_toBottomOf="@+id/btnPlay"
         app:layout_constraintEnd_toEndOf="@id/cardView"
@@ -171,17 +170,17 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnList"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/round_dehaze_24"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnShare"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/outline_share_24_white"
         app:layout_constraintBottom_toBottomOf="@+id/btnList"
@@ -190,9 +189,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDevices"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/baseline_devices_24"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />

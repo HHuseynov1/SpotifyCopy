@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spotifycopy.data.remote.SpotifyDatabase
 import com.example.spotifycopy.presentation.mapper.Mapper.toCategoriesList
-import com.example.spotifycopy.presentation.mapper.Mapper.toUser
+import com.example.spotifycopy.presentation.mapper.Mapper.toUserToModel
 import com.example.spotifycopy.presentation.models.CategoryModel
 import com.example.spotifycopy.presentation.models.UserModel
 import kotlinx.coroutines.launch
@@ -26,7 +26,7 @@ class SearchViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val list = SpotifyDatabase.getUser().toUser()
+            val list = SpotifyDatabase.getUser().toUserToModel()
             _mutableLiveDataUser.value = list
         }
     }
