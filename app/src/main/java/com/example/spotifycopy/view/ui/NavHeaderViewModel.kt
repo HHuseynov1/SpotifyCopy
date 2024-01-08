@@ -1,5 +1,6 @@
 package com.example.spotifycopy.view.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ class NavHeaderViewModel : ViewModel() {
         viewModelScope.launch {
             val list = SpotifyDatabase.getUser().toUserToModel()
             _mutableLiveData.value = list
+            Log.e("userModel",list.toString())
         }
     }
 

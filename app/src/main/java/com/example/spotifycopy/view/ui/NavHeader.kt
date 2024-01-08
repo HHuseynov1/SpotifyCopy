@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.NavHeaderBinding
+import kotlin.math.log
 
 class NavHeader : Fragment() {
 
@@ -29,7 +30,9 @@ class NavHeader : Fragment() {
         viewModel.mutableLiveData.observe(viewLifecycleOwner) {
             for (i in it) {
                 binding.txtName.text = i.userName
+
             }
+            Log.e("navheader",it.toString())
         }
     }
 }

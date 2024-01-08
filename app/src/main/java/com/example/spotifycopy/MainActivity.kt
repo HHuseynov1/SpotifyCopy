@@ -1,5 +1,6 @@
 package com.example.spotifycopy
 
+import android.graphics.BlurMaskFilter.Blur
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -33,8 +34,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.isLoading.value as Boolean
             }
         }
-
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
