@@ -13,7 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentSearchInsideBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchInsideFragment : Fragment() {
 
     lateinit var binding : FragmentSearchInsideBinding

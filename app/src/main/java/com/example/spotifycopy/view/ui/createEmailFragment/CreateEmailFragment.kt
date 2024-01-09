@@ -9,7 +9,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentCreateEmailBinding
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CreateEmailFragment : Fragment() {
     private lateinit var binding: FragmentCreateEmailBinding
     override fun onCreateView(

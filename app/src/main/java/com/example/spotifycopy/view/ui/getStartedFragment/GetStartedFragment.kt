@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentGetStartedBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GetStartedFragment : Fragment() {
     private lateinit var binding: FragmentGetStartedBinding
 

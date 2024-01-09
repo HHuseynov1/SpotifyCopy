@@ -1,6 +1,7 @@
 package com.example.spotifycopy.view.ui.homeFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.databinding.FragmentHomeBinding
 import com.example.spotifycopy.view.ui.homeFragment.cartItem.CartItemAdapter
 import com.example.spotifycopy.view.ui.homeFragment.songsForYou.SongsForYouAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
@@ -19,7 +22,6 @@ class HomeFragment : Fragment() {
 
     private val cartAdapter by lazy { CartItemAdapter() }
     private val songsForYouAdapter by lazy { SongsForYouAdapter() }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +56,7 @@ class HomeFragment : Fragment() {
     private fun addCart(){
         viewModel.mutableLiveDataCart.observe(viewLifecycleOwner){
             cartAdapter.addItems(it)
+            Log.e("it",it.toString())
         }
     }
 

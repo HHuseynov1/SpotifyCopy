@@ -1,9 +1,10 @@
 package com.example.spotifycopy.view.ui.homeFragment
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spotifycopy.data.remote.SpotifyDatabase
+import com.example.spotifycopy.data.repo.Repository
 import com.example.spotifycopy.domain.mapper.Mapper.toCartItemSong
 import com.example.spotifycopy.domain.mapper.Mapper.toCartItemUser
 import com.example.spotifycopy.domain.mapper.Mapper.toSongList
@@ -11,15 +12,18 @@ import com.example.spotifycopy.domain.mapper.Mapper.toUserToModel
 import com.example.spotifycopy.domain.models.CartItemModel
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.domain.models.UserModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repo : Repository) : ViewModel() {
     private val _mutableLiveDataUser = MutableLiveData<List<UserModel>>()
     val mutableLiveDataUser get() = _mutableLiveDataUser
 
     init{
         viewModelScope.launch {
-            val list = SpotifyDatabase.getUser().toUserToModel()
+            val list = repo.getUser().toUserToModel()
             _mutableLiveDataUser.value = list
         }
     }
@@ -29,9 +33,11 @@ class HomeViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val listSong = SpotifyDatabase.getAllSongs().toCartItemSong()
-            val listPlaylist = SpotifyDatabase.getUser().toCartItemUser()
-            _mutableLiveDataCart.value = listSong + listPlaylist
+            val listSong = repo.getAllSongs().toCartItemSong() as ArrayList
+            val listPlaylist = repo.getUser().toCartItemUser() as ArrayList
+            listSong.addAll(listPlaylist)
+            _mutableLiveDataCart.value = listSong
+            Log.e("adga",listSong.toString())
         }
     }
 
@@ -40,7 +46,7 @@ class HomeViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val list = SpotifyDatabase.getAllSongs().toSongList()
+            val list = repo.getAllSongs().toSongList()
             _mutableLiveDataSong.value = list
         }
     }

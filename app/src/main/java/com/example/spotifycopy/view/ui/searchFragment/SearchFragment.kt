@@ -16,7 +16,9 @@ import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Categories
 import com.example.spotifycopy.databinding.FragmentSearchBinding
 import com.example.spotifycopy.domain.models.CategoryModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
 

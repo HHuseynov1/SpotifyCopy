@@ -9,7 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentStartListeningArtistsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StartListeningFragmentArtists : Fragment() {
     lateinit var binding: FragmentStartListeningArtistsBinding
 

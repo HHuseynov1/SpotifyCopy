@@ -14,7 +14,9 @@ import com.example.spotifycopy.data.entities.Genders
 
 import com.example.spotifycopy.databinding.FragmentSelectGenderBinding
 import com.example.spotifycopy.databinding.SelectGenderItemBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectGenderFragment : Fragment() {
     private lateinit var binding: FragmentSelectGenderBinding
     private val myGenderAdapter by lazy { SelectGenderAdapter(

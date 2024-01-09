@@ -15,9 +15,10 @@ import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.FragmentSongBinding
 import com.example.spotifycopy.domain.models.SongModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SongFragment : Fragment() {
-
     private lateinit var binding: FragmentSongBinding
 
     private lateinit var mediaPlayer: MediaPlayer
@@ -26,7 +27,7 @@ class SongFragment : Fragment() {
 
     private var currentSongIndex = 0
 
-    private val viewModel: SongViewModel by viewModels()
+    private val viewModel : SongViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

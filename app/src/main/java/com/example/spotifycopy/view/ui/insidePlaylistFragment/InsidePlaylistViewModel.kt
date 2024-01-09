@@ -1,17 +1,19 @@
 package com.example.spotifycopy.view.ui.insidePlaylistFragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.spotifycopy.data.remote.SpotifyDatabase
+import com.example.spotifycopy.data.repo.Repository
 import com.example.spotifycopy.domain.mapper.Mapper.toSongList
 import com.example.spotifycopy.domain.mapper.Mapper.toUserToModel
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.domain.models.UserModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class InsidePlaylistViewModel : ViewModel() {
+@HiltViewModel
+class InsidePlaylistViewModel @Inject constructor(private val repo : Repository) : ViewModel() {
     private val _mutableLiveDataSong = MutableLiveData<List<SongModel>>()
     val mutableLiveDataSong get() = _mutableLiveDataSong
 
@@ -22,14 +24,14 @@ class InsidePlaylistViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            val list = SpotifyDatabase.getAllSongs().toSongList()
+            val list = repo.getAllSongs().toSongList()
             _mutableLiveDataSong.value = list
         }
     }
 
     init {
         viewModelScope.launch {
-            val list = SpotifyDatabase.getUser().toUserToModel()
+            val list = repo.getUser().toUserToModel()
             _mutableLiveDataUser.value = list
         }
     }

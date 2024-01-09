@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentInsidePlaylistBinding
 import com.example.spotifycopy.domain.models.UserModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InsidePlaylistFragment : Fragment() {
 
     lateinit var binding: FragmentInsidePlaylistBinding

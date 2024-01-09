@@ -26,10 +26,13 @@ class CartItemAdapter : RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>
 
     inner class CartItemViewHolder(private val binding: CartItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : CartItemModel) {
-            binding.txtName.text = item.titleSong
-            Glide.with(itemView.context).load(item.imageSong).into(binding.cardImage)
-            binding.txtName.text = item.titlePlaylist
-            Glide.with(itemView.context).load(item.imagePlaylist).into(binding.cardImage)
+            if(item.titleSong.isNotEmpty()) {
+                binding.txtName.text = item.titleSong
+                Glide.with(itemView.context).load(item.imageSong).into(binding.cardImage)
+            }else {
+                binding.txtName.text = item.titlePlaylist
+                Glide.with(itemView.context).load(item.imagePlaylist).into(binding.cardImage)
+            }
             Log.e("item",item.toString())
         }
     }
