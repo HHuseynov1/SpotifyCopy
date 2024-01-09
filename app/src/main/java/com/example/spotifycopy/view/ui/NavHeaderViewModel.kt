@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spotifycopy.data.remote.SpotifyDatabase
-import com.example.spotifycopy.presentation.mapper.Mapper.toUserToModel
-import com.example.spotifycopy.presentation.models.UserModel
+import com.example.spotifycopy.domain.mapper.Mapper.toUserToModel
+import com.example.spotifycopy.domain.models.UserModel
 import kotlinx.coroutines.launch
 
 class NavHeaderViewModel : ViewModel() {

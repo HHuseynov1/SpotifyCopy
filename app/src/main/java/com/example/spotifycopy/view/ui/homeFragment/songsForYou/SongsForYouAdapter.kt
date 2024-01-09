@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.SongsForYouItemBinding
-import com.example.spotifycopy.presentation.models.CartItemModel
-import com.example.spotifycopy.presentation.models.SongModel
+import com.example.spotifycopy.domain.models.CartItemModel
+import com.example.spotifycopy.domain.models.SongModel
 
 class SongsForYouAdapter : RecyclerView.Adapter<SongsForYouAdapter.SongsForYouViewHolder>() {
 

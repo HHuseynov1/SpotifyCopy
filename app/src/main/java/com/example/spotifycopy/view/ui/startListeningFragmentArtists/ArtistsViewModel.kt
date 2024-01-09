@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.spotifycopy.data.remote.SpotifyDatabase
-import com.example.spotifycopy.presentation.mapper.Mapper.toArtistsList
-import com.example.spotifycopy.presentation.models.ArtistsModel
+import com.example.spotifycopy.domain.mapper.Mapper.toArtistsList
+import com.example.spotifycopy.domain.models.ArtistsModel
 import kotlinx.coroutines.launch
 
 class ArtistsViewModel : ViewModel() {

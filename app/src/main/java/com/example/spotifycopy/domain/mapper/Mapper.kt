@@ -1,14 +1,14 @@
-package com.example.spotifycopy.presentation.mapper
+package com.example.spotifycopy.domain.mapper
 
 import com.example.spotifycopy.data.entities.Artists
 import com.example.spotifycopy.data.entities.Categories
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.data.entities.User
-import com.example.spotifycopy.presentation.models.ArtistsModel
-import com.example.spotifycopy.presentation.models.CartItemModel
-import com.example.spotifycopy.presentation.models.CategoryModel
-import com.example.spotifycopy.presentation.models.SongModel
-import com.example.spotifycopy.presentation.models.UserModel
+import com.example.spotifycopy.domain.models.ArtistsModel
+import com.example.spotifycopy.domain.models.CartItemModel
+import com.example.spotifycopy.domain.models.CategoryModel
+import com.example.spotifycopy.domain.models.SongModel
+import com.example.spotifycopy.domain.models.UserModel
 
 object Mapper {
     fun List<Artists>.toArtistsList() = map {

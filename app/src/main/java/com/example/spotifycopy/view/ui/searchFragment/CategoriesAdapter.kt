@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.data.entities.Categories
 import com.example.spotifycopy.databinding.SearchItemBinding
 import com.example.spotifycopy.databinding.SelectGenderItemBinding
-import com.example.spotifycopy.presentation.models.CategoryModel
+import com.example.spotifycopy.domain.models.CategoryModel
 
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
 

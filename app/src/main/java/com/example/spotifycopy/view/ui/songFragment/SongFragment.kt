@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.FragmentSongBinding
-import com.example.spotifycopy.presentation.models.SongModel
+import com.example.spotifycopy.domain.models.SongModel
 
 class SongFragment : Fragment() {
 

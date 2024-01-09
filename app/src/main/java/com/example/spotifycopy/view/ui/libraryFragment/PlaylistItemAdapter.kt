@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.PlaylistItemForLibraryBinding
-import com.example.spotifycopy.presentation.models.UserModel
+import com.example.spotifycopy.domain.models.UserModel
 
 class PlaylistItemAdapter(
     private val insideFragment: () -> Unit,

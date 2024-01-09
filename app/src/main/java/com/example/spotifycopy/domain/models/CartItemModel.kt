@@ -1,4 +1,4 @@
-package com.example.spotifycopy.presentation.models
+package com.example.spotifycopy.domain.models
 
 data class CartItemModel(
     val titleSong : String,

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.CartItemBinding
-import com.example.spotifycopy.presentation.models.CartItemModel
+import com.example.spotifycopy.domain.models.CartItemModel
 
 class CartItemAdapter : RecyclerView.Adapter<CartItemAdapter.CartItemViewHolder>() {
 

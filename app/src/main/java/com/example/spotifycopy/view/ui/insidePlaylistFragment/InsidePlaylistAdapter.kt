@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.data.entities.Genders
 import com.example.spotifycopy.data.entities.Song
 import com.example.spotifycopy.databinding.InsidePlaylistItemBinding
-import com.example.spotifycopy.presentation.models.SongModel
-import com.example.spotifycopy.presentation.models.UserModel
+import com.example.spotifycopy.domain.models.SongModel
+import com.example.spotifycopy.domain.models.UserModel
 
 class InsidePlaylistAdapter(
     private val currentSong: (Int) -> Unit

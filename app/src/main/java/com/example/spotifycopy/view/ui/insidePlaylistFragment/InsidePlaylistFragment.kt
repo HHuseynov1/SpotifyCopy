@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentInsidePlaylistBinding
-import com.example.spotifycopy.presentation.models.UserModel
+import com.example.spotifycopy.domain.models.UserModel
 
 class InsidePlaylistFragment : Fragment() {
 

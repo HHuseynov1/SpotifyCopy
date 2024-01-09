@@ -13,7 +13,7 @@ import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentLibraryBinding
 import com.example.spotifycopy.databinding.FragmentSearchBinding
-import com.example.spotifycopy.presentation.models.UserModel
+import com.example.spotifycopy.domain.models.UserModel
 
 class LibraryFragment : Fragment() {
 

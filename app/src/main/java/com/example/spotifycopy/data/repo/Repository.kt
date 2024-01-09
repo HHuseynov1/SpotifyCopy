@@ -1,4 +1,4 @@
-package com.example.spotifycopy.data.remote
+package com.example.spotifycopy.data.repo
 
 import com.example.spotifycopy.data.entities.Artists
 import com.example.spotifycopy.data.entities.Categories
@@ -8,9 +8,9 @@ import com.example.spotifycopy.data.other.Constants
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-object SpotifyDatabase {
+class Repository {
     private val fireStore = FirebaseFirestore.getInstance()
-    val artistsCollection = fireStore.collection(Constants.ARTIST_COLLECTION)
+    private val artistsCollection = fireStore.collection(Constants.ARTIST_COLLECTION)
 
     suspend fun getAllArtists():List<Artists>{
         return try{
@@ -49,5 +49,4 @@ object SpotifyDatabase {
             emptyList()
         }
     }
-
 }

@@ -15,7 +15,7 @@ import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Categories
 import com.example.spotifycopy.databinding.FragmentSearchBinding
-import com.example.spotifycopy.presentation.models.CategoryModel
+import com.example.spotifycopy.domain.models.CategoryModel
 
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
