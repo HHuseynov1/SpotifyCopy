@@ -9,7 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.SongsForSearchItemBinding
 import com.example.spotifycopy.domain.models.SongModel
 
-class SearchInsideAdapter : RecyclerView.Adapter<SearchInsideAdapter.SearchInsideViewHolder>() {
+class SearchInsideAdapter(
+    private val currentSong: (Int) -> Unit
+) : RecyclerView.Adapter<SearchInsideAdapter.SearchInsideViewHolder>() {
 
     private val songsCallBack = object : DiffUtil.ItemCallback<SongModel>() {
         override fun areItemsTheSame(oldItem: SongModel, newItem: SongModel): Boolean {
@@ -23,8 +25,14 @@ class SearchInsideAdapter : RecyclerView.Adapter<SearchInsideAdapter.SearchInsid
 
     private val diffUtil = AsyncListDiffer(this, songsCallBack)
 
-
     inner class SearchInsideViewHolder(private val binding : SongsForSearchItemBinding) : RecyclerView.ViewHolder(binding.root){
+
+        init {
+            itemView.setOnClickListener {
+                currentSong(bindingAdapterPosition)
+            }
+        }
+
         fun bind(item : SongModel){
             binding.txtArtistName.text = item.artist
             binding.txtSongName.text = item.title

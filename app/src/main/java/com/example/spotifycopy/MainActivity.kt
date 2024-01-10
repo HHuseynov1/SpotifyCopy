@@ -17,6 +17,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -105,11 +106,13 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        val header = binding.navView.inflateHeaderView(R.layout.nav_header)
-
-        header.findViewById<TextView>(R.id.txtName).text = "Huseyn"
-
-
+        viewModel.mutableLiveData.observe(this) {
+            val header = binding.navView.inflateHeaderView(R.layout.nav_header)
+            for (i in it) {
+                header.findViewById<TextView>(R.id.txtName).text = i.userName
+                Glide.with(this).load(i.imgProfile).into(header.findViewById(R.id.circleImageView))
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

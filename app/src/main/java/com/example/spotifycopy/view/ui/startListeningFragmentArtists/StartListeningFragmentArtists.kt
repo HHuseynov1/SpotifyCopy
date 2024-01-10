@@ -1,6 +1,8 @@
 package com.example.spotifycopy.view.ui.startListeningFragmentArtists
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentStartListeningArtistsBinding
+import com.example.spotifycopy.domain.models.ArtistsModel
+import com.example.spotifycopy.domain.models.SongModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,11 +37,40 @@ class StartListeningFragmentArtists : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addItems()
+        searchData()
     }
 
     private fun addItems(){
-        viewModel.artists.observe(viewLifecycleOwner){
+        viewModel.mutableLiveData.observe(viewLifecycleOwner){
             myAdapter.addItems(it)
         }
     }
+
+    private fun searchData() {
+        binding.edtName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?,start: Int, before: Int, count: Int) {
+                    filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        val list = ArrayList<ArtistsModel>()
+        viewModel.mutableLiveData.observe(viewLifecycleOwner) {
+            for (item in it) {
+                if (item.artistName.lowercase().contains(text.lowercase())) {
+                    list.add(item)
+                }
+            }
+            myAdapter.addItems(list)
+        }
+    }
+
 }

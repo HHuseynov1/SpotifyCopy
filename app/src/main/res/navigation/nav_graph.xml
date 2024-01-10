@@ -116,5 +116,9 @@
         android:id="@+id/searchInsideFragment"
         android:name="com.example.spotifycopy.view.ui.searchFragment.SearchInsideFragment.SearchInsideFragment"
         android:label="fragment_search_inside"
-        tools:layout="@layout/fragment_search_inside" />
+        tools:layout="@layout/fragment_search_inside" >
+        <action
+            android:id="@+id/action_searchInsideFragment_to_songFragment"
+            app:destination="@id/songFragment" />
+    </fragment>
 </navigation>

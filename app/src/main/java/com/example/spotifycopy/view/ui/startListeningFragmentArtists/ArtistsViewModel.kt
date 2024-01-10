@@ -12,14 +12,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArtistsViewModel @Inject constructor(private val repo : Repository): ViewModel() {
-    private val _artists = MutableLiveData<List<ArtistsModel>>()
-    val artists get() = _artists
+    private val _mutableLiveData = MutableLiveData<List<ArtistsModel>>()
+    val mutableLiveData get() = _mutableLiveData
 
 
     init {
         viewModelScope.launch {
             val list = repo.getAllArtists().toArtistsList()
-            _artists.value = list
+            _mutableLiveData.value = list
         }
     }
 
