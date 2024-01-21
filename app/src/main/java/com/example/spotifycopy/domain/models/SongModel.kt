@@ -1,5 +1,7 @@
 package com.example.spotifycopy.domain.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 data class SongModel (
     val id:Int,
     val title:String,

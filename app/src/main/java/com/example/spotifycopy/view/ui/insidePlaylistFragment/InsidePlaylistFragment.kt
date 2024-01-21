@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentInsidePlaylistBinding
 import com.example.spotifycopy.domain.models.UserModel
@@ -66,7 +67,10 @@ class InsidePlaylistFragment : Fragment() {
     }
 
     private fun onItemClick(position : Int){
-        val action = InsidePlaylistFragmentDirections.actionInsidePlaylistFragmentToSongFragment(position)
-        findNavController().navigate(action)
+        val mainActivity = activity as MainActivity
+        mainActivity.subscribeToObservers(position)
+        mainActivity.viewPagerVisible()
+//        val action = InsidePlaylistFragmentDirections.actionInsidePlaylistFragmentToSongFragment((position))
+//        findNavController().navigate(action)
     }
 }

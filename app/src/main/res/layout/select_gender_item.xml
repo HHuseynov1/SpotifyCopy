@@ -3,15 +3,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="10dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp">
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.chip.Chip
         android:id="@+id/btnGender"
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_startedbuttons"
         android:text="ExampleGender"
+        app:chipCornerRadius="50dp"
+        android:backgroundTint="@android:color/transparent"
         android:textColor="@color/white"
         android:textSize="12sp"
         tools:ignore="MissingConstraints"

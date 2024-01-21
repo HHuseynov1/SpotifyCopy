@@ -42,6 +42,7 @@
         android:layout_marginHorizontal="24dp"
         android:background="#0000"
         android:text="@string/log_in"
+
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,70 +50,63 @@
         app:layout_constraintTop_toBottomOf="@+id/btnFacebook"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFacebook"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/border_startedbuttons"
-        android:text="@string/continue_with_facebook"
+        app:strokeWidth="1dp"
+        app:strokeColor="#414141"
+        android:text="@string/continue_with_google"
         android:textColor="@color/white"
+        app:iconSize="20dp"
+        app:icon="@drawable/facebook"
+        app:iconTintMode="multiply"
+        android:padding="15dp"
+        app:iconGravity="textStart"
         app:layout_constraintBottom_toTopOf="@+id/btnLogIn"
         app:layout_constraintEnd_toEndOf="@+id/btnLogIn"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnLogIn"
         app:layout_constraintTop_toBottomOf="@+id/btnGoogle"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/facebook"
-        app:layout_constraintBottom_toBottomOf="@+id/btnFacebook"
-        app:layout_constraintEnd_toEndOf="@+id/btnFacebook"
-        app:layout_constraintHorizontal_bias="0.10"
-        app:layout_constraintStart_toStartOf="@id/btnFacebook"
-        app:layout_constraintTop_toTopOf="@+id/btnFacebook" />
 
-    <androidx.appcompat.widget.AppCompatButton
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/border_startedbuttons"
+        app:strokeWidth="1dp"
+        app:strokeColor="#414141"
         android:text="@string/continue_with_google"
+        android:padding="15dp"
+
         android:textColor="@color/white"
+        app:iconSize="20dp"
+        app:icon="@drawable/google"
+        app:iconTintMode="multiply"
+        app:iconGravity="textStart"
         app:layout_constraintBottom_toTopOf="@+id/btnFacebook"
         app:layout_constraintEnd_toEndOf="@+id/btnLogIn"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnLogIn"
         app:layout_constraintTop_toBottomOf="@+id/btnSignUp"
         tools:ignore="TouchTargetSizeCheck" />
 
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/google"
-        app:layout_constraintBottom_toBottomOf="@+id/btnGoogle"
-        app:layout_constraintEnd_toEndOf="@+id/btnGoogle"
-        app:layout_constraintHorizontal_bias="0.13"
-        app:layout_constraintStart_toStartOf="@+id/btnGoogle"
-        app:layout_constraintTop_toTopOf="@+id/btnGoogle" />
-
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/border_startedbuttons"
         android:backgroundTint="#1ED860"
         android:text="@string/sign_up_free"
+        android:padding="15dp"
         android:textColor="#111111"
         app:layout_constraintBottom_toTopOf="@+id/btnGoogle"
         app:layout_constraintEnd_toEndOf="@+id/btnLogIn"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btnLogIn"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="1.0"

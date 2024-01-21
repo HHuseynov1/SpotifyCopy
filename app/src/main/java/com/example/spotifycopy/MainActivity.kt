@@ -1,12 +1,9 @@
 package com.example.spotifycopy
 
-import android.graphics.BlurMaskFilter.Blur
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -19,8 +16,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.ActivityMainBinding
-import com.google.android.material.navigation.NavigationView
+import com.example.spotifycopy.domain.models.SongModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -30,8 +28,13 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
+    private val swipeSongAdapter by lazy { SwipeSongAdapter() }
+
+    private var curPlayingSong: SongModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
@@ -39,14 +42,43 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.vpSong.adapter = swipeSongAdapter
 
         bottomView()
         navigationViewAccess()
         navigationView()
+        viewPagerGone()
 
         setContentView(binding.root)
     }
+
+    private fun switchViewPagerToCurrentSong(song: SongModel) {
+        val newItemIndex = swipeSongAdapter.songs.indexOf(song)
+        if (newItemIndex != -1) {
+            binding.vpSong.currentItem = newItemIndex
+            curPlayingSong = song
+        }
+    }
+
+    fun subscribeToObservers(position: Int) {
+        viewModel.mutableLiveDataSong.observe(this) { songs ->
+            swipeSongAdapter.songs = songs
+            if (songs.isNotEmpty()) {
+                Glide.with(this).load((curPlayingSong ?: songs[0]).imageUrl)
+                    .into(binding.imgSong)
+            }
+        }
+
+        viewModel.mutableLiveDataSong.observe(this) {
+            if (it == null) return@observe
+
+            Glide.with(this).load(it[position].imageUrl).into(binding.imgSong)
+            Log.e("current", it[position].toString())
+
+            switchViewPagerToCurrentSong(it[position])
+        }
+    }
+
 
     fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -120,6 +152,51 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun viewPagerGone(){
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            when (destination.id) {
+                R.id.getStartedFragment,
+                R.id.createEmailFragment,
+                R.id.createPasswordFargment,
+                R.id.selectGenderFragment,
+                R.id.startListeningFragmentArtists,
+                R.id.startListeningFragmentEnd,
+                R.id.login,
+                R.id.songFragment -> {
+                    binding.vpSong.visibility = View.GONE
+                    binding.imgCard.visibility = View.GONE
+                    binding.playButton.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    fun viewPagerVisible() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            when (destination.id) {
+                R.id.homeFragment,
+                R.id.searchFragment,
+                R.id.libraryFragment,
+                R.id.insidePlaylistFragment,
+                R.id.searchInsideFragment-> {
+                    binding.vpSong.visibility = View.VISIBLE
+                    binding.imgCard.visibility = View.VISIBLE
+                    binding.playButton.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun navigationViewAccess() {

@@ -15,7 +15,8 @@ object Mapper {
         ArtistsModel(
             it.id,
             it.imageUrl,
-            it.artistName
+            it.artistName,
+            false
         )
     }
 

@@ -1,15 +1,20 @@
 package com.example.spotifycopy.view.ui.songFragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Song
@@ -28,6 +33,7 @@ class SongFragment : Fragment() {
     private var currentSongIndex = 0
 
     private val viewModel : SongViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +54,6 @@ class SongFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mediaPlayer = MediaPlayer()
-
-        songList = ArrayList()
 
         viewModel.mutableLiveData.observe(viewLifecycleOwner) {
             songList = it

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentSearchInsideBinding
 import com.example.spotifycopy.domain.models.SongModel
+import com.example.spotifycopy.view.ui.songFragment.SongFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +25,7 @@ class SearchInsideFragment : Fragment() {
     lateinit var binding: FragmentSearchInsideBinding
 
     private val myAdapter by lazy { SearchInsideAdapter(
-        currentSong = { openSong(it) }
+        currentSong = { id -> openSong(id) }
     )}
 
     private val viewModel: SearchInsideViewModel by viewModels()

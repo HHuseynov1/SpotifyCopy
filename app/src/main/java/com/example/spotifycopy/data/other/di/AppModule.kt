@@ -1,5 +1,6 @@
-package com.example.spotifycopy.di
+package com.example.spotifycopy.data.other.di
 
+import com.example.spotifycopy.SwipeSongAdapter
 import com.example.spotifycopy.data.repo.Repository
 import dagger.Module
 import dagger.Provides
@@ -16,4 +17,7 @@ object AppModule {
         return Repository()
     }
 
+    @Provides
+    @Singleton
+    fun provideSwipeSongAdapter() = SwipeSongAdapter()
 }

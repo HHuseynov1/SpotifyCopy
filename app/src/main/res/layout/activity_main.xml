@@ -40,8 +40,47 @@
         app:itemTextColor="@android:color/darker_gray"
         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpSong"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="#ebdac1"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imgCard"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        app:layout_constraintBottom_toBottomOf="@id/vpSong"
+        app:layout_constraintTop_toTopOf="@id/vpSong"
+        app:layout_constraintStart_toStartOf="@+id/vpSong"
+        android:layout_marginStart="15dp"
+
+        >
+
+        <ImageView
+            android:id="@+id/imgSong"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playButton"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/baseline_play_arrow_24"
+        app:layout_constraintBottom_toBottomOf="@id/vpSong"
+        app:layout_constraintTop_toTopOf="@id/vpSong"
+        app:layout_constraintEnd_toEndOf="@+id/vpSong" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

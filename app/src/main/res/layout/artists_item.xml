@@ -7,27 +7,14 @@
     android:layout_marginTop="10dp"
     android:background="#111111">
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/imgCard"
+    <CheckBox
+        android:id="@+id/imgArtists"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:cardCornerRadius="50dp"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="ContentDescription"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/avatars" />
-    </androidx.cardview.widget.CardView>
+        android:gravity="center"
+        android:button="@null"
+        android:background="@drawable/spotifylogo"
+        />
 
     <TextView
         android:id="@+id/txtName"
@@ -37,8 +24,8 @@
         android:textColor="#FFFF"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imgCard"
-        app:layout_constraintTop_toBottomOf="@id/imgCard"
+        app:layout_constraintStart_toStartOf="@+id/imgArtists"
+        app:layout_constraintTop_toBottomOf="@id/imgArtists"
         tools:ignore="SmallSp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

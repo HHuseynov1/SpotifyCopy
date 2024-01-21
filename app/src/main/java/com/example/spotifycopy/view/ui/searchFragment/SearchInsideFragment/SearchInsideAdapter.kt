@@ -1,5 +1,8 @@
 package com.example.spotifycopy.view.ui.searchFragment.SearchInsideFragment
 
+import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -10,7 +13,7 @@ import com.example.spotifycopy.databinding.SongsForSearchItemBinding
 import com.example.spotifycopy.domain.models.SongModel
 
 class SearchInsideAdapter(
-    private val currentSong: (Int) -> Unit
+    private val currentSong : (Int) -> Unit
 ) : RecyclerView.Adapter<SearchInsideAdapter.SearchInsideViewHolder>() {
 
     private val songsCallBack = object : DiffUtil.ItemCallback<SongModel>() {
@@ -29,7 +32,7 @@ class SearchInsideAdapter(
 
         init {
             itemView.setOnClickListener {
-                currentSong(bindingAdapterPosition)
+                currentSong(diffUtil.currentList[bindingAdapterPosition].id - 1)
             }
         }
 

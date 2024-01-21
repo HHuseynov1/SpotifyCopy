@@ -28,7 +28,6 @@ class ArtistsItemAdapter : RecyclerView.Adapter<ArtistsItemAdapter.ArtistsViewHo
     inner class ArtistsViewHolder(private val binding : ArtistsItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : ArtistsModel){
             binding.txtName.text = item.artistName
-            Glide.with(itemView.context).load(item.imageUrl).into(binding.imageView)
         }
     }
 

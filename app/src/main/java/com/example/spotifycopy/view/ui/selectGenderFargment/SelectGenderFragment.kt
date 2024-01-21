@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.spotifycopy.R
 import com.example.spotifycopy.data.entities.Genders
 
@@ -34,8 +35,12 @@ class SelectGenderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvGender.adapter = myGenderAdapter
-        binding.rvGender.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, true)
+//        binding.rvGender.adapter = myGenderAdapter
+//        binding.rvGender.layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
+
+        binding.btnFemale.setOnClickListener {
+            findNavController().navigate(R.id.startListeningFragmentArtists)
+        }
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()

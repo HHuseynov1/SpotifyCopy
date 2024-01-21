@@ -5,6 +5,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -56,6 +57,9 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
     implementation("com.google.firebase:firebase-analytics")
+
+    //Media
+    implementation ("androidx.media:media:1.7.0")
 
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
