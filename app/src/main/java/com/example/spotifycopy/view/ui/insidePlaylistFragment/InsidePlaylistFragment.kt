@@ -1,5 +1,7 @@
 package com.example.spotifycopy.view.ui.insidePlaylistFragment
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,10 +20,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class InsidePlaylistFragment : Fragment() {
 
+    lateinit var mediaPlayer: MediaPlayer
+
     lateinit var binding: FragmentInsidePlaylistBinding
-    private val myAdapter by lazy { InsidePlaylistAdapter(
-        currentSong = {position -> onItemClick(position)}
-    ) }
+    private val myAdapter by lazy {
+        InsidePlaylistAdapter(
+            currentSong = { position -> onItemClick(position) }
+        )
+    }
     private val viewModel: InsidePlaylistViewModel by viewModels()
 
 
@@ -33,6 +39,8 @@ class InsidePlaylistFragment : Fragment() {
 
         binding.rvPlaylist.adapter = myAdapter
         binding.rvPlaylist.layoutManager = LinearLayoutManager(requireContext())
+
+        mediaPlayer = MediaPlayer()
 
         return binding.root
     }
@@ -66,11 +74,9 @@ class InsidePlaylistFragment : Fragment() {
         }
     }
 
-    private fun onItemClick(position : Int){
+    private fun onItemClick(position: Int) {
         val mainActivity = activity as MainActivity
         mainActivity.subscribeToObservers(position)
         mainActivity.viewPagerVisible()
-//        val action = InsidePlaylistFragmentDirections.actionInsidePlaylistFragmentToSongFragment((position))
-//        findNavController().navigate(action)
     }
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentSearchInsideBinding
 import com.example.spotifycopy.domain.models.SongModel
@@ -88,7 +89,11 @@ class SearchInsideFragment : Fragment() {
     }
 
     private fun openSong(position : Int){
-        val action = SearchInsideFragmentDirections.actionSearchInsideFragmentToSongFragment(position)
-        findNavController().navigate(action)
+        val mainActivity = activity as MainActivity
+        mainActivity.subscribeToObservers(position)
+        mainActivity.viewPagerVisible()
+
+//        val action = SearchInsideFragmentDirections.actionSearchInsideFragmentToSongFragment(position)
+//        findNavController().navigate(action)
     }
 }

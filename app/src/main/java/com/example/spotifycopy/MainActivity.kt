@@ -1,5 +1,7 @@
 package com.example.spotifycopy
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -12,13 +14,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.ActivityMainBinding
 import com.example.spotifycopy.domain.models.SongModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import java.util.Currency
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -32,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
     private var curPlayingSong: SongModel? = null
 
+    private lateinit var mediaPlayer: MediaPlayer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -42,6 +49,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        mediaPlayer = MediaPlayer()
+
         binding.vpSong.adapter = swipeSongAdapter
 
         bottomView()
@@ -49,7 +58,33 @@ class MainActivity : AppCompatActivity() {
         navigationView()
         viewPagerGone()
 
+        binding.playButton.setOnClickListener {
+            togglePlayBack()
+        }
+
+        swipeSongAdapter.setOnItemClickListener(object : SwipeSongAdapter.ItemClickListener {
+            override fun onItemClick(position: Int) {
+                openSongFragment(position)
+            }
+        })
+
         setContentView(binding.root)
+    }
+
+    private fun openSongFragment(position: Int) {
+        val bundle = Bundle()
+        bundle.putInt("selectedPosition", position)
+        findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment, bundle)
+    }
+
+    private fun togglePlayBack() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+            binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+        } else {
+            mediaPlayer.start()
+            binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+        }
     }
 
     private fun switchViewPagerToCurrentSong(song: SongModel) {
@@ -76,6 +111,26 @@ class MainActivity : AppCompatActivity() {
             Log.e("current", it[position].toString())
 
             switchViewPagerToCurrentSong(it[position])
+        }
+
+        viewModel.mutableLiveDataSong.observe(this) {
+            mediaPlayer.reset()
+            mediaPlayer.setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+
+            mediaPlayer.setDataSource(it[position].songUrl)
+            mediaPlayer.prepareAsync()
+            mediaPlayer.setOnPreparedListener {
+                togglePlayBack()
+                mediaPlayer.setOnErrorListener { _, what, extra ->
+                    println("MediaPlayer error: what=$what, extra=$extra")
+                    false
+                }
+            }
         }
     }
 
@@ -154,7 +209,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun viewPagerGone(){
+    private fun viewPagerGone() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
@@ -170,9 +225,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.startListeningFragmentEnd,
                 R.id.login,
                 R.id.songFragment -> {
-                    binding.vpSong.visibility = View.GONE
-                    binding.imgCard.visibility = View.GONE
-                    binding.playButton.visibility = View.GONE
+                    binding.vpSong.visibility = View.INVISIBLE
+                    binding.imgCard.visibility = View.INVISIBLE
+                    binding.playButton.visibility = View.INVISIBLE
                 }
             }
         }
@@ -184,13 +239,12 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-
             when (destination.id) {
                 R.id.homeFragment,
                 R.id.searchFragment,
                 R.id.libraryFragment,
                 R.id.insidePlaylistFragment,
-                R.id.searchInsideFragment-> {
+                R.id.searchInsideFragment -> {
                     binding.vpSong.visibility = View.VISIBLE
                     binding.imgCard.visibility = View.VISIBLE
                     binding.playButton.visibility = View.VISIBLE

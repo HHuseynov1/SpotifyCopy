@@ -1,8 +1,10 @@
 package com.example.spotifycopy
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +12,17 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.databinding.SwipeItemBinding
 import com.example.spotifycopy.domain.models.SongModel
 
-class SwipeSongAdapter : RecyclerView.Adapter<SwipeSongAdapter.SwipeViewHolder>(){
+class SwipeSongAdapter(
+) : RecyclerView.Adapter<SwipeSongAdapter.SwipeViewHolder>(){
+    private var itemClickListener: ItemClickListener? = null
+
+    interface ItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: ItemClickListener) {
+        itemClickListener = listener
+    }
 
     private val songsCallBack = object : DiffUtil.ItemCallback<SongModel>() {
         override fun areItemsTheSame(oldItem: SongModel, newItem: SongModel): Boolean {
@@ -29,6 +41,13 @@ class SwipeSongAdapter : RecyclerView.Adapter<SwipeSongAdapter.SwipeViewHolder>(
         set(value) = diffUtil.submitList(value)
 
     inner class SwipeViewHolder(private val binding : SwipeItemBinding) : RecyclerView.ViewHolder(binding.root){
+
+        init{
+            itemView.setOnClickListener {
+                itemClickListener?.onItemClick(bindingAdapterPosition)
+            }
+        }
+
         fun bind(item : SongModel){
             binding.songName.text = item.title
             binding.songArtist.text = item.artist
@@ -45,7 +64,6 @@ class SwipeSongAdapter : RecyclerView.Adapter<SwipeSongAdapter.SwipeViewHolder>(
     }
 
     override fun onBindViewHolder(holder: SwipeViewHolder, position: Int) {
-        val song = songs[position]
         holder.bind(diffUtil.currentList[position])
     }
 
