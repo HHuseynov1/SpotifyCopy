@@ -1,6 +1,6 @@
 package com.example.spotifycopy.view.ui.insidePlaylistFragment
 
-import android.media.AudioAttributes
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,9 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.MainActivity
-import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentInsidePlaylistBinding
-import com.example.spotifycopy.domain.models.UserModel
+import com.example.spotifycopy.domain.service.MediaPlayerService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -77,6 +76,11 @@ class InsidePlaylistFragment : Fragment() {
     private fun onItemClick(position: Int) {
         val mainActivity = activity as MainActivity
         mainActivity.subscribeToObservers(position)
+
+        val intent = Intent(requireContext(), MediaPlayerService::class.java)
+        intent.putExtra("selectedPosition", position)
+        requireContext().startActivity(intent)
+
         mainActivity.viewPagerVisible()
     }
 }
