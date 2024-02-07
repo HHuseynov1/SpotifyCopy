@@ -17,7 +17,6 @@ import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentSearchInsideBinding
 import com.example.spotifycopy.domain.models.SongModel
-import com.example.spotifycopy.view.ui.songFragment.SongFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -89,9 +88,8 @@ class SearchInsideFragment : Fragment() {
     }
 
     private fun openSong(position : Int){
-        val mainActivity = activity as MainActivity
-        mainActivity.subscribeToObservers(position)
-        mainActivity.viewPagerVisible()
+//        val mainActivity = activity as MainActivity
+//        mainActivity.viewPagerVisible()
 
 //        val action = SearchInsideFragmentDirections.actionSearchInsideFragmentToSongFragment(position)
 //        findNavController().navigate(action)

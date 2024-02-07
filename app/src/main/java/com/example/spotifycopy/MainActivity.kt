@@ -1,44 +1,66 @@
 package com.example.spotifycopy
 
-import android.media.AudioAttributes
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
+import android.os.Parcelable
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.spotifycopy.data.other.Constants
 import com.example.spotifycopy.databinding.ActivityMainBinding
 import com.example.spotifycopy.domain.models.SongModel
+import com.example.spotifycopy.domain.service.MediaPlayerService
+import com.example.spotifycopy.utils.CurrentMusic.currentMusic
+import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Currency
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var toggle: ActionBarDrawerToggle
-
     private val viewModel by viewModels<MainViewModel>()
-
     private val swipeSongAdapter by lazy { SwipeSongAdapter() }
-
     private var curPlayingSong: SongModel? = null
-
     private lateinit var mediaPlayer: MediaPlayer
+    private var mediaService: MediaPlayerService? = null
+    private lateinit var songList: List<SongModel>
+    private var isMusicPlaying: Boolean = false
 
+    private var isServiceBound = false
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MediaPlayerService.MusicPlayerBinder
+        }
+        override fun onServiceDisconnected(name: ComponentName?) {
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -51,12 +73,32 @@ class MainActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer()
 
+        // isMusicPlaying = mediaService?.isMusicPlaying() ?: false
+
         binding.vpSong.adapter = swipeSongAdapter
+
+        viewModel.mutableLiveDataSong.observe(this) {
+            swipeSongAdapter.songs = it
+        }
+
+        viewModel.mutableLiveDataSong.observe(this){
+            songList = it
+        }
 
         bottomView()
         navigationViewAccess()
         navigationView()
         viewPagerGone()
+
+        binding.vpSong.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                // Called when a new page (song) is selected
+                val selectedSong = swipeSongAdapter.songs.getOrNull(position)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && selectedSong != null) {
+                    startPlayingSong(selectedSong)
+                }
+            }
+        })
 
         binding.playButton.setOnClickListener {
             togglePlayBack()
@@ -71,69 +113,76 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    fun bindToService(position: Int){
+        val serviceIntent = Intent(this, MediaPlayerService::class.java).apply {
+            // action = ACTION_PLAY_PAUSE
+            putExtra(Constants.EXTRA_SONG_INDEX, position)
+            putParcelableArrayListExtra(Constants.EXTRA_MUSIC_LIST, songList as ArrayList<out Parcelable>)
+        }
+        startService(serviceIntent)
+        bindService(serviceIntent,serviceConnection,Context.BIND_AUTO_CREATE)
+    }
+
     private fun openSongFragment(position: Int) {
         val bundle = Bundle()
         bundle.putInt("selectedPosition", position)
         findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment, bundle)
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun togglePlayBack() {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.stop()
-            binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
-        } else {
-            mediaPlayer.start()
-            binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+        Log.e("isMusicPlaying", isMusicPlaying.toString())
+
+        if (isServiceBound) {
+            isMusicPlaying = if (isMusicPlaying) {
+                // If music is playing, pause it
+                mediaService?.pauseSong()
+                binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+                false
+            } else {
+                currentMusic.observe(this) { currentMusic ->
+                    lifecycleScope.launch {
+                        mediaService?.playSong(currentMusic)
+                        Log.e("positionSongFragment", currentMusic)
+                    }
+                }
+                binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+                true
+            }
         }
     }
 
     private fun switchViewPagerToCurrentSong(song: SongModel) {
         val newItemIndex = swipeSongAdapter.songs.indexOf(song)
-        if (newItemIndex != -1) {
+        if (swipeSongAdapter.songs.isNotEmpty() && newItemIndex != -1) {
             binding.vpSong.currentItem = newItemIndex
             curPlayingSong = song
         }
     }
 
-    fun subscribeToObservers(position: Int) {
-        viewModel.mutableLiveDataSong.observe(this) { songs ->
-            swipeSongAdapter.songs = songs
-            if (songs.isNotEmpty()) {
-                Glide.with(this).load((curPlayingSong ?: songs[0]).imageUrl)
-                    .into(binding.imgSong)
-            }
-        }
-
-        viewModel.mutableLiveDataSong.observe(this) {
-            if (it == null) return@observe
-
-            Glide.with(this).load(it[position].imageUrl).into(binding.imgSong)
-            Log.e("current", it[position].toString())
-
-            switchViewPagerToCurrentSong(it[position])
-        }
-
-        viewModel.mutableLiveDataSong.observe(this) {
-            mediaPlayer.reset()
-            mediaPlayer.setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-
-            mediaPlayer.setDataSource(it[position].songUrl)
-            mediaPlayer.prepareAsync()
-            mediaPlayer.setOnPreparedListener {
-                togglePlayBack()
-                mediaPlayer.setOnErrorListener { _, what, extra ->
-                    println("MediaPlayer error: what=$what, extra=$extra")
-                    false
-                }
-            }
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun startPlayingSong(song: SongModel) {
+        if (isServiceBound) {
+            mediaService?.playSong(song.songUrl)
         }
     }
 
+    private fun updateUI(song: SongModel) {
+        switchViewPagerToCurrentSong(song)
+        Glide.with(this).load(song.imageUrl).into(binding.imgSong)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun subscribeToObserve() {
+        currentMusicLiveData.observe(this) { selectedSong ->
+            if (selectedSong != null) {
+                viewPagerVisible()
+                startPlayingSong(selectedSong)
+                updateUI(selectedSong)
+                binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+            }
+        }
+    }
 
     fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -279,4 +328,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        if (isServiceBound) {
+//            unbindService(serviceConnection)
+//        }
+//    }
 }

@@ -1,37 +1,53 @@
 package com.example.spotifycopy.domain.service
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.media.MediaPlayer
-import android.media.session.PlaybackState.ACTION_PLAY_PAUSE
-import android.media.session.PlaybackState.ACTION_SKIP_TO_NEXT
-import android.media.session.PlaybackState.ACTION_SKIP_TO_PREVIOUS
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import com.example.spotifycopy.MainActivity
+import com.example.spotifycopy.R
+import com.example.spotifycopy.data.other.Constants.ACTION_PLAY_PAUSE
+import com.example.spotifycopy.data.other.Constants.ACTION_SKIP_TO_NEXT
+import com.example.spotifycopy.data.other.Constants.ACTION_SKIP_TO_PREVIOUS
+import com.example.spotifycopy.data.other.Constants.EXTRA_MUSIC_LIST
+import com.example.spotifycopy.data.other.Constants.EXTRA_SONG_INDEX
 import com.example.spotifycopy.data.repo.Repository
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.utils.CurrentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
+import com.example.spotifycopy.view.ui.insidePlaylistFragment.InsidePlaylistFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.security.cert.PKIXRevocationChecker
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MediaPlayerService : Service() {
 
-    private val TAG = "MusicService"
-    lateinit var mediaPlayer: MediaPlayer
+    private val TAG = "MediaPlayerService"
+    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var songs: ArrayList<SongModel>
     var songIndex: Int = 0
     private var currentMusic: String = ""
     private lateinit var mediaSession: MediaSessionCompat
-    val musicIsplaying = MutableLiveData<Boolean>()
+    val musicIsPlaying = MutableLiveData<Boolean>()
+    private val NOTIFICATION_CHANNEL_ID = "MusicPlayerChannelId"
+    private val NOTIFICATION_ID = 1
 
     @Inject
     lateinit var repo: Repository
@@ -40,33 +56,57 @@ class MediaPlayerService : Service() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
         mediaSession = MediaSessionCompat(this, "Player Audio")
+        songs = ArrayList()
+        createNotificationChannel()
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand() called")
 
-        when (intent?.action) {
-            ACTION_PLAY_PAUSE.toString() -> {
-                //            val songPath = intent.getStringExtra("song_path")
-                if (isMusicPlaying()) {
-                    // Eğer müzik çalıyorsa, duraklat
-                    pauseSong()
+        intent?.let {
+            songIndex = it.getIntExtra(EXTRA_SONG_INDEX, 0)
+            songs = it.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST) as ArrayList<SongModel>
+
+            Log.e("serviceSongIndex", songIndex.toString())
+            Log.e("serviceSongList", songs.toString())
+
+            if (songIndex in songs.indices) {
+                playSong(songs[songIndex].songUrl)
+                currentMusicLiveData.postValue(songs[songIndex])
+
+                if (songs.isNotEmpty()) {
+                    when (it.action) {
+                        ACTION_PLAY_PAUSE -> {
+                            if (isMusicPlaying()) {
+                                pauseSong()
+                            } else {
+                                playSong(songs[songIndex].songUrl)
+                            }
+                        }
+
+                        ACTION_SKIP_TO_NEXT -> {
+                            skipToNextSong()
+                        }
+
+                        ACTION_SKIP_TO_PREVIOUS -> {
+                            skipToPreviousSong()
+                        }
+
+                        else -> {
+                            Log.e(TAG, "songs is empty")
+                        }
+                    }
                 } else {
-                    // Eğer müzik duraksı ise, en son bilinen konumdan devam et
-                    playSong(songs[songIndex].songUrl)
-//                    currentMusicLiveData.postValue(songs[songIndex])//
+                    // Handle the case where songs is empty
+                    Log.e(TAG, "songs is empty!")
                 }
-            }
-
-            ACTION_SKIP_TO_NEXT.toString() -> {
-                skipToNextSong()
-            }
-
-            ACTION_SKIP_TO_PREVIOUS.toString() -> {
-                skipToPreviousSong()
+            } else {
+                Log.e(TAG, "Invalid initial songIndex provided!")
+                // Handle the case where the initial songIndex is not valid
             }
         }
+
         return START_NOT_STICKY
     }
 
@@ -76,84 +116,69 @@ class MediaPlayerService : Service() {
 
     private val binder = MusicPlayerBinder()
 
-
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBind(intent: Intent): IBinder {
-        songs = ArrayList()
-        songIndex = intent.getIntExtra("song_index", 0)
-        songs = intent.getParcelableArrayListExtra<SongModel>("musicList") as ArrayList<SongModel>
+//        songIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
+//        songs = intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST) as ArrayList<SongModel>
+//
+//        Log.e("serviceSongIndex", songIndex.toString())
+//        Log.e("serviceSongList", songs.toString())
 
         mediaPlayer.setOnCompletionListener {
             skipToNextSong()
         }
 
-        playSong(songs[songIndex].songUrl)
-//        currentMusicLiveData.postValue(songs[songIndex])
+        // Check if songs is not empty before attempting to play the song
+        if (songs.isNotEmpty()) {
+            playSong(songs[songIndex].songUrl)
+        } else {
+            // Handle the case where songs is empty
+            Log.e(TAG, "sonMgsisempty!")
+        }
         return binder
     }
 
     override fun onDestroy() {
-        // Release the MediaPlayer object
         mediaPlayer.release()
     }
-    // Bu özel seekTo yöntemini ekleyin
 
-    @SuppressLint("DiscouragedApi")
     @RequiresApi(Build.VERSION_CODES.S)
     fun playSong(songPath: String?) {
-//        if (songPath.isNullOrEmpty()) return
         try {
-            musicIsplaying.postValue(true)
+            musicIsPlaying.postValue(true)
             if (mediaPlayer.currentPosition == 0 || songPath != currentMusic) {
-
                 mediaPlayer.stop()
                 mediaPlayer.reset()
-
-                // Set the song path to the MediaPlayer object
                 mediaPlayer.setDataSource(songPath)
-
-                // Prepare the MediaPlayer object
                 mediaPlayer.prepare()
                 currentMusic = songPath!!
                 val music = songs[songIndex]
-//   /storage/emulated/0/Sounds/20230118_213636.m4a
-
-                Log.e("songpath", "playSong: $songPath")
-                val context: Context = applicationContext
-//                Glide.with(this).load(music.imageUrl).into()
-//                val backgroundBitmap = BitmapFactory.decodeResource(resources, resourceId)
-                currentMusicLiveData.postValue(songs[songIndex])
+                Log.e("currentMusicLiveData", currentMusicLiveData.toString())
                 CurrentMusic.currentMusic.postValue(songPath)
-                // Start playing the song
-                //music.lastPlayTime=System.currentTimeMillis()
-
-//                CoroutineScope(IO).launch {
-//                    repo.insertMusic(music)
-//                }
+                showNotification(music.title, music.artist, null)
                 mediaPlayer.start()
             } else {
                 mediaPlayer.start()
             }
-            // Stop any currently playing song
-
         } catch (e: Exception) {
             Log.e(TAG, "Error playing song: ${e.message}")
         }
     }
 
     fun isMusicPlaying(): Boolean {
-        return mediaPlayer.isPlaying
+        Log.e("isPlaying", mediaPlayer.isPlaying.toString())
+        var isPlaying = false
+        if (songIndex != 0) {
+            isPlaying = true
+        }
+        Log.e("isPlaying", isPlaying.toString())
+        return isPlaying
     }
-
-//    fun seekTo(progress: Int) {
-//        mediaPlayer.seekTo(progress)
-//    }
-    // Bu özel seekTo yöntemini ekleyin
 
     fun pauseSong() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-            musicIsplaying.postValue(false)
+            musicIsPlaying.postValue(false)
         }
     }
 
@@ -168,10 +193,8 @@ class MediaPlayerService : Service() {
         mediaPlayer.reset()
         songIndex = (songIndex + 1) % songs.size
         val nextSongPath = songs[songIndex].songUrl
-//        currentMusicLiveData.postValue(songs[songIndex])
         CurrentMusic.currentMusic.postValue(nextSongPath)
         currentMusicLiveData.postValue(songs[songIndex])
-
         playSong(nextSongPath)
     }
 
@@ -179,16 +202,127 @@ class MediaPlayerService : Service() {
     fun skipToPreviousSong() {
         mediaPlayer.stop()
         mediaPlayer.reset()
-        songIndex = (songIndex - 1) % songs.size
-        if (songIndex < 0) {
-            songIndex = songs.size - 1
-        }
+        songIndex = (songIndex - 1 + songs.size) % songs.size
         val previousSongPath = songs[songIndex].songUrl
-//        currentMusicLiveData.postValue(songs[songIndex])
         CurrentMusic.currentMusic.postValue(previousSongPath)
         currentMusicLiveData.postValue(songs[songIndex])
-
-
         playSong(previousSongPath)
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelName = "Music Player"
+            val channelDescription = "Music Player Channel"
+
+            val notificationChannel = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                channelName,
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = channelDescription
+                enableLights(true)
+                lightColor = Color.BLUE
+            }
+
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun showNotification(
+        music_name: String,
+        artist_name: String,
+        backgroundBitmap: Bitmap?
+    ) {
+        Log.e(TAG, "showNotification")
+        // Bildirim tıklandığında açılacak aktiviteyi ayarlayalım
+        val pendingIntent = Intent(this, MainActivity::class.java).let { intent ->
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            )
+        }
+        val bigPictureStyle = NotificationCompat.BigPictureStyle()
+            .bigPicture(backgroundBitmap)
+            .bigLargeIcon(backgroundBitmap)
+
+        val playPauseIntent = Intent(this, MediaPlayerService::class.java).apply {
+            action = ACTION_PLAY_PAUSE
+
+        }
+        val previousIntent = Intent(this, MediaPlayerService::class.java).apply {
+            action = ACTION_SKIP_TO_PREVIOUS
+
+        }
+        val nextIntent = Intent(this, MediaPlayerService::class.java).apply {
+            action = ACTION_SKIP_TO_NEXT
+
+        }
+
+        val playPausePendingIntent: PendingIntent = PendingIntent.getService(
+            this,
+            0,
+            playPauseIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+        val previousPendingIntent: PendingIntent = PendingIntent.getService(
+            this,
+            0,
+            previousIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+        val nextPendingIntent: PendingIntent = PendingIntent.getService(
+            this,
+            0,
+            nextIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+
+        val notification: Notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setContentTitle(music_name)
+            .setContentText(artist_name)
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .addAction(R.drawable.baseline_skip_previous_24, "Previous", previousPendingIntent)
+            .addAction(R.drawable.baseline_play_arrow_24, "Play/Pause", playPausePendingIntent)
+            .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent)
+            .setStyle(bigPictureStyle)
+            .build()
+
+        startForeground(NOTIFICATION_ID, notification)
+    }
+
+    inner class MusicPlayerBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent == null || context == null) return
+
+            when (intent.action) {
+                ACTION_PLAY_PAUSE -> {
+                    // Play/Pause eylemi burada işlenecek
+                    val serviceIntent = Intent(context, MediaPlayerService::class.java)
+                    serviceIntent.action = intent.action
+                    context.startService(serviceIntent)
+                }
+
+                ACTION_SKIP_TO_PREVIOUS -> {
+                    // Previous eylemi burada işlenecek
+                    val serviceIntent = Intent(context, MediaPlayerService::class.java)
+                    serviceIntent.action = intent.action
+                    context.startService(serviceIntent)
+                }
+
+                ACTION_SKIP_TO_NEXT -> {
+                    // Next eylemi burada işlenecek
+                    val serviceIntent = Intent(context, MediaPlayerService::class.java)
+                    serviceIntent.action = intent.action
+                    context.startService(serviceIntent)
+                }
+            }
+        }
     }
 }
