@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -29,6 +30,9 @@ import com.example.spotifycopy.domain.service.MediaPlayerService
 import com.example.spotifycopy.utils.CurrentMusic.currentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
+import java.time.Duration
 import java.util.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -47,13 +51,7 @@ class InsidePlaylistFragment : Fragment() {
     }
     private val viewModel: InsidePlaylistViewModel by viewModels()
 
-//    private val serviceConnection = object : ServiceConnection {
-//        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-//            val binder = service as MediaPlayerService.MusicPlayerBinder
-//        }
-//        override fun onServiceDisconnected(name: ComponentName?) {
-//        }
-//    }
+
 
 
     override fun onCreateView(
@@ -106,17 +104,19 @@ class InsidePlaylistFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.S)
     private fun onItemClick(position: Int) {
         val activity = activity as MainActivity
-       // startMusicPlayback(position)
+        // startMusicPlayback(position)
         activity.bindToService(position)
-        activity.subscribeToObserve()
-    //    requireContext().unbindService(serviceConnection)
+        lifecycleScope.launch {
+            kotlinx.coroutines.delay(2000)
+            activity.subscribeToObserve()
+        }
     }
 
-    private fun startMusicPlayback(position: Int) {
-        val activity = activity as MainActivity
-        Log.e("ListSong", listSong.toString())
-        Log.e("position", position.toString())
-
+//    private fun startMusicPlayback(position: Int) {
+//        val activity = activity as MainActivity
+//        Log.e("ListSong", listSong.toString())
+//        Log.e("position", position.toString())
+//
 //        val serviceIntent = Intent(requireContext(), MediaPlayerService::class.java).apply {
 //            // action = ACTION_PLAY_PAUSE
 //            putExtra(EXTRA_SONG_INDEX, position)
@@ -124,5 +124,5 @@ class InsidePlaylistFragment : Fragment() {
 //        }
 //      //  requireContext().startService(serviceIntent)
 //        requireContext().bindService(serviceIntent,serviceConnection,Context.BIND_AUTO_CREATE)
-    }
+//    }
 }

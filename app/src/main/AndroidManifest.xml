@@ -22,9 +22,7 @@
         <service
             android:name=".domain.service.MediaPlayerService"
             android:enabled="true"
-            android:exported="true"
-            >
-        </service>
+            android:exported="true" />
         <receiver android:name=".domain.service.MediaPlayerService$MusicPlayerBroadcastReceiver"
             android:exported="true">
             <intent-filter>

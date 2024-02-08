@@ -55,10 +55,17 @@ class MainActivity : AppCompatActivity() {
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as MediaPlayerService.MusicPlayerBinder
+            mediaService = binder.getService()
+            isMusicPlaying = binder.getService().isMusicPlaying()
+            isServiceBound = true
         }
+
         override fun onServiceDisconnected(name: ComponentName?) {
+            isServiceBound = false
+            mediaService = null
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer()
 
-        // isMusicPlaying = mediaService?.isMusicPlaying() ?: false
+        //isMusicPlaying = mediaService?.isMusicPlaying() ?: false
 
         binding.vpSong.adapter = swipeSongAdapter
 
@@ -81,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             swipeSongAdapter.songs = it
         }
 
-        viewModel.mutableLiveDataSong.observe(this){
+        viewModel.mutableLiveDataSong.observe(this) {
             songList = it
         }
 
@@ -113,14 +120,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    fun bindToService(position: Int){
+    fun bindToService(position: Int) {
         val serviceIntent = Intent(this, MediaPlayerService::class.java).apply {
-            // action = ACTION_PLAY_PAUSE
             putExtra(Constants.EXTRA_SONG_INDEX, position)
-            putParcelableArrayListExtra(Constants.EXTRA_MUSIC_LIST, songList as ArrayList<out Parcelable>)
+            putParcelableArrayListExtra(
+                Constants.EXTRA_MUSIC_LIST,
+                songList as ArrayList<out Parcelable>
+            )
         }
-        startService(serviceIntent)
-        bindService(serviceIntent,serviceConnection,Context.BIND_AUTO_CREATE)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            startService(serviceIntent)
+        }
     }
 
     private fun openSongFragment(position: Int) {
@@ -131,26 +142,23 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun togglePlayBack() {
-        Log.e("isMusicPlaying", isMusicPlaying.toString())
-
         if (isServiceBound) {
-            isMusicPlaying = if (isMusicPlaying) {
-                // If music is playing, pause it
+            val isPlaying = mediaService?.isMusicPlaying() ?: false
+            isMusicPlaying = if (isPlaying) {
                 mediaService?.pauseSong()
                 binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
                 false
             } else {
                 currentMusic.observe(this) { currentMusic ->
-                    lifecycleScope.launch {
-                        mediaService?.playSong(currentMusic)
-                        Log.e("positionSongFragment", currentMusic)
-                    }
+                    mediaService?.playSong(currentMusic)
+                    Log.e("positionSongFragment", currentMusic)
                 }
                 binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
                 true
             }
         }
     }
+
 
     private fun switchViewPagerToCurrentSong(song: SongModel) {
         val newItemIndex = swipeSongAdapter.songs.indexOf(song)
@@ -174,12 +182,23 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     fun subscribeToObserve() {
+        Log.e("subscribeToObserve", "subscribeToObserve")
+        viewPagerVisible()
+        bindService(
+            Intent(this, MediaPlayerService::class.java),
+            serviceConnection,
+            BIND_AUTO_CREATE
+        )
         currentMusicLiveData.observe(this) { selectedSong ->
+            Log.e("calan mahni", selectedSong.toString())
             if (selectedSong != null) {
-                viewPagerVisible()
                 startPlayingSong(selectedSong)
                 updateUI(selectedSong)
-                binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+                if (isServiceBound && mediaService?.isMusicPlaying() == true) {
+                    binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+                } else {
+                    binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+                }
             }
         }
     }
@@ -282,7 +301,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun viewPagerVisible() {
+    private fun viewPagerVisible() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController

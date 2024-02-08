@@ -1,6 +1,5 @@
 package com.example.spotifycopy.domain.service
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -31,9 +30,13 @@ import com.example.spotifycopy.data.repo.Repository
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.utils.CurrentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
-import com.example.spotifycopy.view.ui.insidePlaylistFragment.InsidePlaylistFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.security.cert.PKIXRevocationChecker
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,50 +63,55 @@ class MediaPlayerService : Service() {
         createNotificationChannel()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand() called")
 
         intent?.let {
-            songIndex = it.getIntExtra(EXTRA_SONG_INDEX, 0)
-            songs = it.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST) as ArrayList<SongModel>
+//            songIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
+//            songs =
+//                intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST) as ArrayList<SongModel>
+//            Log.e("serviceSongIndex", songIndex.toString())
+//            Log.e("serviceSongList", songs.toString())
 
-            Log.e("serviceSongIndex", songIndex.toString())
-            Log.e("serviceSongList", songs.toString())
+            onBind(it)
 
-            if (songIndex in songs.indices) {
-                playSong(songs[songIndex].songUrl)
-                currentMusicLiveData.postValue(songs[songIndex])
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    if (songIndex in songs.indices) {
+                        if (songs.isNotEmpty()) {
+                            when (it.action) {
+                                ACTION_PLAY_PAUSE -> {
+                                    if (isMusicPlaying()) {
+                                        pauseSong()
+                                    } else {
+                                        playSong(songs[songIndex].songUrl)
+                                        Log.e("geldi","geldi")
+                                    }
+                                }
 
-                if (songs.isNotEmpty()) {
-                    when (it.action) {
-                        ACTION_PLAY_PAUSE -> {
-                            if (isMusicPlaying()) {
-                                pauseSong()
-                            } else {
-                                playSong(songs[songIndex].songUrl)
+                                ACTION_SKIP_TO_NEXT -> {
+                                    skipToNextSong()
+                                }
+
+                                ACTION_SKIP_TO_PREVIOUS -> {
+                                    skipToPreviousSong()
+                                }
+
+                                else -> {
+                                    Log.e(TAG, "songs is empty")
+                                }
                             }
+                        } else {
+                            // Handle the case where songs is empty
+                            Log.e(TAG, "songs is empty!")
                         }
-
-                        ACTION_SKIP_TO_NEXT -> {
-                            skipToNextSong()
-                        }
-
-                        ACTION_SKIP_TO_PREVIOUS -> {
-                            skipToPreviousSong()
-                        }
-
-                        else -> {
-                            Log.e(TAG, "songs is empty")
-                        }
+                    } else {
+                        Log.e(TAG, "Invalid initial songIndex provided!")
+                        // Handle the case where the initial songIndex is not valid
                     }
-                } else {
-                    // Handle the case where songs is empty
-                    Log.e(TAG, "songs is empty!")
                 }
-            } else {
-                Log.e(TAG, "Invalid initial songIndex provided!")
-                // Handle the case where the initial songIndex is not valid
             }
         }
 
@@ -118,12 +126,31 @@ class MediaPlayerService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBind(intent: Intent): IBinder {
-//        songIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
-//        songs = intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST) as ArrayList<SongModel>
-//
-//        Log.e("serviceSongIndex", songIndex.toString())
-//        Log.e("serviceSongList", songs.toString())
+        // Retrieve song list and index from the intent
+        val incomingSongList = intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST)
+        val incomingSongIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
 
+        // Perform null checks
+        if (incomingSongList.isNullOrEmpty()) {
+            Log.e(TAG, "Song list is null or empty")
+            // Handle the case where songs is null or empty
+            return binder
+        }
+
+        if (incomingSongIndex < 0 || incomingSongIndex >= incomingSongList.size) {
+            Log.e(TAG, "Invalid song index provided")
+            // Handle the case where the initial songIndex is not valid
+            return binder
+        }
+
+        // Set the retrieved song list and index
+        songs = ArrayList(incomingSongList)
+        songIndex = incomingSongIndex
+
+        Log.e("serviceSongIndex", songIndex.toString())
+        Log.e("serviceSongList", songs.toString())
+
+        // Set up the MediaPlayer
         mediaPlayer.setOnCompletionListener {
             skipToNextSong()
         }
@@ -131,15 +158,18 @@ class MediaPlayerService : Service() {
         // Check if songs is not empty before attempting to play the song
         if (songs.isNotEmpty()) {
             playSong(songs[songIndex].songUrl)
+            Log.e("bind-a geldi", "bind-a geldi")
         } else {
             // Handle the case where songs is empty
-            Log.e(TAG, "sonMgsisempty!")
+            Log.e(TAG, "Songs is empty!")
         }
+
         return binder
     }
 
     override fun onDestroy() {
         mediaPlayer.release()
+        super.onDestroy()
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -156,6 +186,7 @@ class MediaPlayerService : Service() {
                 Log.e("currentMusicLiveData", currentMusicLiveData.toString())
                 CurrentMusic.currentMusic.postValue(songPath)
                 showNotification(music.title, music.artist, null)
+
                 mediaPlayer.start()
             } else {
                 mediaPlayer.start()
