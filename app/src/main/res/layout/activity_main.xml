@@ -44,7 +44,8 @@
         android:id="@+id/vpSong"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:background="#ebdac1"
+        android:background="@drawable/bacground_for_viewpager2"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

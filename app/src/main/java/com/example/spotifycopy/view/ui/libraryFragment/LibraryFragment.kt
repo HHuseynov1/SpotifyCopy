@@ -1,9 +1,14 @@
 package com.example.spotifycopy.view.ui.libraryFragment
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,8 +17,8 @@ import com.bumptech.glide.Glide
 import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
 import com.example.spotifycopy.databinding.FragmentLibraryBinding
-import com.example.spotifycopy.databinding.FragmentSearchBinding
-import com.example.spotifycopy.domain.models.UserModel
+import com.example.spotifycopy.view.ui.libraryFragment.artist.ArtistsItemAdapter
+import com.example.spotifycopy.view.ui.libraryFragment.playlis.PlaylistItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,26 +26,56 @@ class LibraryFragment : Fragment() {
 
     lateinit var binding: FragmentLibraryBinding
 
-    private val myAdapter by lazy { PlaylistItemAdapter(
-       insideFragment = { insideFragment() }
-    ) }
+    private val myAdapterPlaylist by lazy {
+        PlaylistItemAdapter(
+            insideFragment = { insideFragment() }
+        )
+    }
 
-    private val viewModel : LibraryPlaylistViewModel by viewModels()
+    private val myAdapterArtist by lazy { ArtistsItemAdapter() }
+
+    private val viewModel: LibraryPlaylistViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLibraryBinding.inflate(inflater,container,false)
+        binding = FragmentLibraryBinding.inflate(inflater, container, false)
 
         val mainActivity = activity as MainActivity
 
-        binding.rvPlaylist.adapter = myAdapter
+        binding.rvPlaylist.adapter = myAdapterPlaylist
         binding.rvPlaylist.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.mutableLiveData.observe(viewLifecycleOwner){
-            for(i in it){
+        binding.rvArtist.adapter = myAdapterArtist
+        binding.rvArtist.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.mutableLiveDataUser.observe(viewLifecycleOwner) {
+            for (i in it) {
                 Glide.with(requireContext()).load(i.imgProfile).into(binding.profileImage)
+            }
+        }
+
+        binding.chipArtists.setOnClickListener {
+            binding.rvPlaylist.visibility = View.GONE
+            binding.rvArtist.visibility = View.VISIBLE
+            binding.chipPlaylist.visibility = View.GONE
+            binding.removeSelection.visibility = View.VISIBLE
+        }
+
+        binding.chipPlaylist.setOnClickListener {
+            binding.rvArtist.visibility = View.GONE
+            binding.rvPlaylist.visibility = View.VISIBLE
+            binding.chipArtists.visibility = View.GONE
+            binding.removeSelection.visibility = View.VISIBLE
+        }
+
+        binding.removeSelection.setOnClickListener {
+            binding.removeSelection.visibility = View.GONE
+            if(binding.chipPlaylist.visibility == View.GONE){
+                binding.chipPlaylist.visibility = View.VISIBLE
+            }else{
+                binding.chipArtists.visibility = View.VISIBLE
             }
         }
 
@@ -55,15 +90,23 @@ class LibraryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         addPlaylist()
+        addArtists()
+
     }
 
-    private fun addPlaylist(){
-        viewModel.mutableLiveData.observe(viewLifecycleOwner){
-            myAdapter.addPlaylist(it)
+    private fun addPlaylist() {
+        viewModel.mutableLiveDataUser.observe(viewLifecycleOwner) {
+            myAdapterPlaylist.addPlaylist(it)
         }
     }
 
-    private fun insideFragment(){
+    private fun addArtists() {
+        viewModel.mutableLiveDataArtists.observe(viewLifecycleOwner) {
+            myAdapterArtist.addArtists(it)
+        }
+    }
+
+    private fun insideFragment() {
         findNavController().navigate(R.id.insidePlaylistFragment)
     }
 

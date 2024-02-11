@@ -72,6 +72,26 @@
        </Toolbar>
    </com.google.android.material.appbar.AppBarLayout>
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/removeSelection"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#2A2A2A"
+            android:text="x"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            app:chipCornerRadius="50dp"
+            android:visibility="gone"
+            />
+
     <com.google.android.material.chip.Chip
         android:id="@+id/chipPlaylist"
         android:layout_width="wrap_content"
@@ -82,7 +102,7 @@
         app:chipCornerRadius="50dp"
         android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chipArtists"
@@ -93,16 +113,16 @@
         android:textColor="@color/white"
         app:chipCornerRadius="50dp"
         android:layout_marginStart="10dp"
-
         app:layout_constraintStart_toEndOf="@id/chipPlaylist"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+    </com.google.android.material.chip.ChipGroup>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@+id/chipPlaylist">
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -149,7 +169,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvPlaylist"
-                tools:listitem="@layout/artists_item_for_library" />
+                tools:listitem="@layout/artist_item_for_library" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddArtists"

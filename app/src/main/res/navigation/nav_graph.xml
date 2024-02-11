@@ -102,9 +102,9 @@
         android:name="com.example.spotifycopy.view.ui.songFragment.SongFragment"
         android:label="fragment_song"
         tools:layout="@layout/fragment_song">
-        <argument
-            android:name="selectedPosition"
-            app:argType="integer" />
+<!--        <argument-->
+<!--            android:name="selectedPosition"-->
+<!--            app:argType="integer" />-->
     </fragment>
     <fragment
         android:id="@+id/insidePlaylistFragment"

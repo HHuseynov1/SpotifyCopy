@@ -126,11 +126,9 @@ class MediaPlayerService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onBind(intent: Intent): IBinder {
-        // Retrieve song list and index from the intent
         val incomingSongList = intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST)
         val incomingSongIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
 
-        // Perform null checks
         if (incomingSongList.isNullOrEmpty()) {
             Log.e(TAG, "Song list is null or empty")
             // Handle the case where songs is null or empty
@@ -139,28 +137,23 @@ class MediaPlayerService : Service() {
 
         if (incomingSongIndex < 0 || incomingSongIndex >= incomingSongList.size) {
             Log.e(TAG, "Invalid song index provided")
-            // Handle the case where the initial songIndex is not valid
             return binder
         }
 
-        // Set the retrieved song list and index
         songs = ArrayList(incomingSongList)
         songIndex = incomingSongIndex
 
         Log.e("serviceSongIndex", songIndex.toString())
         Log.e("serviceSongList", songs.toString())
 
-        // Set up the MediaPlayer
         mediaPlayer.setOnCompletionListener {
             skipToNextSong()
         }
 
-        // Check if songs is not empty before attempting to play the song
         if (songs.isNotEmpty()) {
             playSong(songs[songIndex].songUrl)
             Log.e("bind-a geldi", "bind-a geldi")
         } else {
-            // Handle the case where songs is empty
             Log.e(TAG, "Songs is empty!")
         }
 
@@ -186,7 +179,7 @@ class MediaPlayerService : Service() {
                 Log.e("currentMusicLiveData", currentMusicLiveData.toString())
                 CurrentMusic.currentMusic.postValue(songPath)
                 showNotification(music.title, music.artist, null)
-
+                Log.e("music",music.toString())
                 mediaPlayer.start()
             } else {
                 mediaPlayer.start()

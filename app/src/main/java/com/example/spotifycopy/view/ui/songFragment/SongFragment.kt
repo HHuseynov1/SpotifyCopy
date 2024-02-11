@@ -46,8 +46,6 @@ class SongFragment : Fragment() {
     private lateinit var mediaService: MediaPlayerService
     private var isMusicServiceBound = false
 
-    private var position  = 0
-
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as MediaPlayerService.MusicPlayerBinder
@@ -67,12 +65,6 @@ class SongFragment : Fragment() {
         binding = FragmentSongBinding.inflate(inflater, container, false)
 
         mediaPlayer = MediaPlayer()
-//
-//        val selectedPosition = arguments?.getInt("selectedPosition")
-//
-//        selectedPosition?.let {
-//            position = it
-//        }
 
         viewModel.mutableLiveData.observe(viewLifecycleOwner){
             songList = it
@@ -90,26 +82,26 @@ class SongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            // Eğer müzik duraksı ise, en son bilinen konumdan devam et
-            if(CurrentMusic.currentMusic.value!=songList[position].songUrl){
-                mediaService.songIndex = position
-                mediaService.playSong(songList[position].songUrl)
-            }
-            mediaService.musicIsPlaying.observe(viewLifecycleOwner){
-                if(it){
-                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
-//                    binding.play.setImageResource(R.drawable.pause)
-                }else{
-                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
-                    binding.songImage.clearAnimation()
-//                    binding.play.setImageResource(R.drawable.play)
-
-                }
-            }
-            initialiseSeekbar()
-
-        }, 500)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            // Eğer müzik duraksı ise, en son bilinen konumdan devam et
+//            if(CurrentMusic.currentMusic.value!=songList[position].songUrl){
+//                mediaService.songIndex = position
+//                mediaService.playSong(songList[position].songUrl)
+//            }
+//            mediaService.musicIsPlaying.observe(viewLifecycleOwner){
+//                if(it){
+//                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+////                    binding.play.setImageResource(R.drawable.pause)
+//                }else{
+//                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
+//                    binding.songImage.clearAnimation()
+////                    binding.play.setImageResource(R.drawable.play)
+//
+//                }
+//            }
+//            initialiseSeekbar()
+//
+//        }, 500)
 
         currentMusicLiveData.observe(viewLifecycleOwner) {
             Log.e("currenMusic", it.toString())
@@ -117,21 +109,22 @@ class SongFragment : Fragment() {
             binding.txtSongName.text = music.title
             binding.txtArtistName.text = music.artist
             Glide.with(requireContext()).load(music.imageUrl).into(binding.songImage)
+            mediaService.playSong(it.songUrl)
         }
 
-        binding.btnPlay.setOnClickListener {
-            if (isMusicServiceBound) {
-                if (mediaService.isMusicPlaying()) {
-                    // Eğer müzik çalıyorsa, duraklat
-                    mediaService.pauseSong()
-                } else {
-                    initialiseSeekbar()
-                    // Eğer müzik duraksı ise, en son bilinen konumdan devam et
-                    mediaService.playSong(songList[position].songUrl)
-                    Log.e("positionSongFragment",position.toString())
-                }
-            }
-        }
+//        binding.btnPlay.setOnClickListener {
+//            if (isMusicServiceBound) {
+//                if (mediaService.isMusicPlaying()) {
+//                    // Eğer müzik çalıyorsa, duraklat
+//                    mediaService.pauseSong()
+//                } else {
+//                    initialiseSeekbar()
+//                    // Eğer müzik duraksı ise, en son bilinen konumdan devam et
+//                    mediaService.playSong(songList[position].songUrl)
+//                    Log.e("positionSongFragment",position.toString())
+//                }
+//            }
+//        }
 
         binding.btnNext.setOnClickListener {
             mediaService.skipToNextSong()

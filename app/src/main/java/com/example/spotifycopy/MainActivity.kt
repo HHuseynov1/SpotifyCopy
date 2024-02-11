@@ -28,6 +28,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.data.other.Constants
+import com.example.spotifycopy.data.other.Constants.EXTRA_MUSIC_LIST
+import com.example.spotifycopy.data.other.Constants.EXTRA_SONG_INDEX
 import com.example.spotifycopy.databinding.ActivityMainBinding
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.domain.service.MediaPlayerService
@@ -35,6 +37,7 @@ import com.example.spotifycopy.utils.CurrentMusic.currentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
@@ -102,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 // Called when a new page (song) is selected
                 val selectedSong = swipeSongAdapter.songs.getOrNull(position)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && selectedSong != null) {
-                    startPlayingSong(selectedSong)
+                    bindToService(position)
                 }
             }
         })
@@ -113,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
         swipeSongAdapter.setOnItemClickListener(object : SwipeSongAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
-                openSongFragment(position)
+                openSongFragment()
             }
         })
 
@@ -122,9 +125,9 @@ class MainActivity : AppCompatActivity() {
 
     fun bindToService(position: Int) {
         val serviceIntent = Intent(this, MediaPlayerService::class.java).apply {
-            putExtra(Constants.EXTRA_SONG_INDEX, position)
+            putExtra(EXTRA_SONG_INDEX, position)
             putParcelableArrayListExtra(
-                Constants.EXTRA_MUSIC_LIST,
+                EXTRA_MUSIC_LIST,
                 songList as ArrayList<out Parcelable>
             )
         }
@@ -134,10 +137,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openSongFragment(position: Int) {
-        val bundle = Bundle()
-        bundle.putInt("selectedPosition", position)
-        findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment, bundle)
+    private fun openSongFragment() {
+        findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment)
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -159,19 +160,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun switchViewPagerToCurrentSong(song: SongModel) {
         val newItemIndex = swipeSongAdapter.songs.indexOf(song)
         if (swipeSongAdapter.songs.isNotEmpty() && newItemIndex != -1) {
             binding.vpSong.currentItem = newItemIndex
             curPlayingSong = song
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun startPlayingSong(song: SongModel) {
-        if (isServiceBound) {
-            mediaService?.playSong(song.songUrl)
         }
     }
 
@@ -183,21 +176,26 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
     fun subscribeToObserve() {
         Log.e("subscribeToObserve", "subscribeToObserve")
-        viewPagerVisible()
-        bindService(
-            Intent(this, MediaPlayerService::class.java),
-            serviceConnection,
-            BIND_AUTO_CREATE
-        )
-        currentMusicLiveData.observe(this) { selectedSong ->
-            Log.e("calan mahni", selectedSong.toString())
-            if (selectedSong != null) {
-                startPlayingSong(selectedSong)
-                updateUI(selectedSong)
-                if (isServiceBound && mediaService?.isMusicPlaying() == true) {
-                    binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+
+        lifecycleScope.launch {
+            viewPagerVisible()
+
+            bindService(
+                Intent(this@MainActivity, MediaPlayerService::class.java),
+                serviceConnection,
+                BIND_AUTO_CREATE
+            )
+            currentMusicLiveData.observe(this@MainActivity) { selectedSong ->
+                Log.e("calan mahni", selectedSong.toString())
+                if (selectedSong != null) {
+                    updateUI(selectedSong)
+                    if (isServiceBound && mediaService?.isMusicPlaying() == true) {
+                        binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
+                    } else {
+                        binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+                    }
                 } else {
-                    binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
+                    Log.e("selectedSong is null", "selectedSong nulldur")
                 }
             }
         }
@@ -293,9 +291,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.startListeningFragmentEnd,
                 R.id.login,
                 R.id.songFragment -> {
-                    binding.vpSong.visibility = View.INVISIBLE
-                    binding.imgCard.visibility = View.INVISIBLE
-                    binding.playButton.visibility = View.INVISIBLE
+                    binding.vpSong.visibility = View.GONE
+                    binding.imgCard.visibility = View.GONE
+                    binding.playButton.visibility = View.GONE
                 }
             }
         }
