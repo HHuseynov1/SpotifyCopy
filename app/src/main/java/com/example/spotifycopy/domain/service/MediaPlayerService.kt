@@ -83,7 +83,7 @@ class MediaPlayerService : Service() {
                         if (songs.isNotEmpty()) {
                             when (it.action) {
                                 ACTION_PLAY_PAUSE -> {
-                                    if (isMusicPlaying()) {
+                                    if (mediaPlayer.isPlaying) {
                                         pauseSong()
                                     } else {
                                         playSong(songs[songIndex].songUrl)
@@ -176,6 +176,7 @@ class MediaPlayerService : Service() {
                 mediaPlayer.prepare()
                 currentMusic = songPath!!
                 val music = songs[songIndex]
+                currentMusicLiveData.postValue(songs[songIndex])
                 Log.e("currentMusicLiveData", currentMusicLiveData.toString())
                 CurrentMusic.currentMusic.postValue(songPath)
                 showNotification(music.title, music.artist, null)
@@ -192,7 +193,7 @@ class MediaPlayerService : Service() {
     fun isMusicPlaying(): Boolean {
         Log.e("isPlaying", mediaPlayer.isPlaying.toString())
         var isPlaying = false
-        if (songIndex != 0) {
+        if (songIndex >= 0) {
             isPlaying = true
         }
         Log.e("isPlaying", isPlaying.toString())

@@ -144,8 +144,8 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
     private fun togglePlayBack() {
         if (isServiceBound) {
-            val isPlaying = mediaService?.isMusicPlaying() ?: false
-            isMusicPlaying = if (isPlaying) {
+            Log.e("isMusicPlaying",isMusicPlaying.toString())
+            isMusicPlaying = if (isMusicPlaying)  {
                 mediaService?.pauseSong()
                 binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
                 false
@@ -180,20 +180,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewPagerVisible()
 
-            bindService(
-                Intent(this@MainActivity, MediaPlayerService::class.java),
-                serviceConnection,
-                BIND_AUTO_CREATE
-            )
             currentMusicLiveData.observe(this@MainActivity) { selectedSong ->
                 Log.e("calan mahni", selectedSong.toString())
                 if (selectedSong != null) {
                     updateUI(selectedSong)
-                    if (isServiceBound && mediaService?.isMusicPlaying() == true) {
-                        binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
-                    } else {
-                        binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
-                    }
+                    binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
                 } else {
                     Log.e("selectedSong is null", "selectedSong nulldur")
                 }

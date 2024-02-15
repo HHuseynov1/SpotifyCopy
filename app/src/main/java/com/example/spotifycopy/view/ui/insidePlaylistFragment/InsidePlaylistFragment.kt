@@ -52,8 +52,6 @@ class InsidePlaylistFragment : Fragment() {
     private val viewModel: InsidePlaylistViewModel by viewModels()
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,10 +104,8 @@ class InsidePlaylistFragment : Fragment() {
         val activity = activity as MainActivity
         // startMusicPlayback(position)
         activity.bindToService(position)
-        lifecycleScope.launch {
-            kotlinx.coroutines.delay(2000)
-            activity.subscribeToObserve()
-        }
+        activity.subscribeToObserve()
+
     }
 
 //    private fun startMusicPlayback(position: Int) {

@@ -1,14 +1,9 @@
 package com.example.spotifycopy.view.ui.libraryFragment
 
-import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -72,11 +67,10 @@ class LibraryFragment : Fragment() {
 
         binding.removeSelection.setOnClickListener {
             binding.removeSelection.visibility = View.GONE
-            if(binding.chipPlaylist.visibility == View.GONE){
-                binding.chipPlaylist.visibility = View.VISIBLE
-            }else{
-                binding.chipArtists.visibility = View.VISIBLE
-            }
+            binding.chipPlaylist.visibility = View.VISIBLE
+            binding.chipArtists.visibility = View.VISIBLE
+            binding.rvArtist.visibility = View.VISIBLE
+            binding.rvPlaylist.visibility = View.VISIBLE
         }
 
         binding.profileImage.setOnClickListener {
