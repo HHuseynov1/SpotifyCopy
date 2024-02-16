@@ -32,6 +32,7 @@ import com.example.spotifycopy.databinding.FragmentSongBinding
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.domain.service.MediaPlayerService
 import com.example.spotifycopy.utils.CurrentMusic
+import com.example.spotifycopy.utils.CurrentMusic.currentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,16 +41,16 @@ class SongFragment : Fragment() {
     private lateinit var binding: FragmentSongBinding
     private lateinit var songList: List<SongModel>
     private val viewModel: SongViewModel by viewModels()
-
     private lateinit var mediaPlayer: MediaPlayer
-
     private lateinit var mediaService: MediaPlayerService
     private var isMusicServiceBound = false
+    private var musicIsPlayingSongFragment = false
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as MediaPlayerService.MusicPlayerBinder
             mediaService = binder.getService()
+            musicIsPlayingSongFragment = mediaService.isMusicPlaying(true)
             isMusicServiceBound = true
         }
 
@@ -59,76 +60,55 @@ class SongFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSongBinding.inflate(inflater, container, false)
 
         mediaPlayer = MediaPlayer()
 
-        viewModel.mutableLiveData.observe(viewLifecycleOwner){
+        viewModel.mutableLiveData.observe(viewLifecycleOwner) {
             songList = it
         }
+
 
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-        requireContext().bindService(Intent(requireContext(), MediaPlayerService::class.java),serviceConnection,Context.BIND_AUTO_CREATE)
+        requireContext().bindService(
+            Intent(requireContext(), MediaPlayerService::class.java),
+            serviceConnection,
+            Context.BIND_AUTO_CREATE
+        )
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            // Eğer müzik duraksı ise, en son bilinen konumdan devam et
-//            if(CurrentMusic.currentMusic.value!=songList[position].songUrl){
-//                mediaService.songIndex = position
-//                mediaService.playSong(songList[position].songUrl)
-//            }
-//            mediaService.musicIsPlaying.observe(viewLifecycleOwner){
-//                if(it){
-//                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
-////                    binding.play.setImageResource(R.drawable.pause)
-//                }else{
-//                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
-//                    binding.songImage.clearAnimation()
-////                    binding.play.setImageResource(R.drawable.play)
-//
-//                }
-//            }
-//            initialiseSeekbar()
-//
-//        }, 500)
+        Handler(Looper.getMainLooper()).postDelayed({
+            currentMusicLiveData.observe(viewLifecycleOwner) { currentSong ->
+                if (currentMusic.value != currentSong.songUrl) {
+                    mediaService.playSong(currentSong.songUrl)
+                }
+                if (musicIsPlayingSongFragment) {
+                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                } else {
+                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
+                }
+                initialiseSeekbar()
+            }
+        }, 500)
 
-        currentMusicLiveData.observe(viewLifecycleOwner) {
-            Log.e("currenMusic", it.toString())
-            val music = it
-            binding.txtSongName.text = music.title
-            binding.txtArtistName.text = music.artist
-            Glide.with(requireContext()).load(music.imageUrl).into(binding.songImage)
-            mediaService.playSong(it.songUrl)
+        currentSong()
+
+        binding.btnPlay.setOnClickListener {
+            togglePlayBack()
         }
-
-//        binding.btnPlay.setOnClickListener {
-//            if (isMusicServiceBound) {
-//                if (mediaService.isMusicPlaying()) {
-//                    // Eğer müzik çalıyorsa, duraklat
-//                    mediaService.pauseSong()
-//                } else {
-//                    initialiseSeekbar()
-//                    // Eğer müzik duraksı ise, en son bilinen konumdan devam et
-//                    mediaService.playSong(songList[position].songUrl)
-//                    Log.e("positionSongFragment",position.toString())
-//                }
-//            }
-//        }
 
         binding.btnNext.setOnClickListener {
             mediaService.skipToNextSong()
-
         }
         binding.btnPrevious.setOnClickListener {
             mediaService.skipToPreviousSong()
@@ -147,6 +127,36 @@ class SongFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun currentSong() {
+        currentMusicLiveData.observe(viewLifecycleOwner) {
+            Log.e("currenMusic", it.toString())
+            binding.txtSongName.text = it.title
+            binding.txtArtistName.text = it.artist
+            Glide.with(requireContext()).load(it.imageUrl).into(binding.songImage)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun togglePlayBack() {
+        if (isMusicServiceBound) {
+            musicIsPlayingSongFragment = if (musicIsPlayingSongFragment) {
+                Log.e("musicIsPlaying", musicIsPlayingSongFragment.toString())
+                mediaService.pauseSong()
+                binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
+                Log.e("musicIsPlaying", musicIsPlayingSongFragment.toString())
+                false
+            } else {
+                currentMusic.observe(viewLifecycleOwner) { currentMusic ->
+                    mediaService.playSong(currentMusic)
+                    Log.e("positionSongFragment", currentMusic)
+                }
+                binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                Log.e("musicIsPlaying", musicIsPlayingSongFragment.toString())
+                true
+            }
+        }
     }
 
 

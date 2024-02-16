@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as MediaPlayerService.MusicPlayerBinder
             mediaService = binder.getService()
-            isMusicPlaying = binder.getService().isMusicPlaying()
+            isMusicPlaying = binder.getService().isMusicPlaying(true)
             isServiceBound = true
         }
 
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 // Called when a new page (song) is selected
                 val selectedSong = swipeSongAdapter.songs.getOrNull(position)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && selectedSong != null) {
-                    bindToService(position)
+                    startService(position)
                 }
             }
         })
@@ -123,7 +123,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    fun bindToService(position: Int) {
+    override fun onStart() {
+        super.onStart()
+        bindService(Intent(this,MediaPlayerService::class.java),serviceConnection,Context.BIND_AUTO_CREATE)
+    }
+
+    fun startService(position: Int) {
         val serviceIntent = Intent(this, MediaPlayerService::class.java).apply {
             putExtra(EXTRA_SONG_INDEX, position)
             putParcelableArrayListExtra(
@@ -144,8 +149,8 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
     private fun togglePlayBack() {
         if (isServiceBound) {
-            Log.e("isMusicPlaying",isMusicPlaying.toString())
-            isMusicPlaying = if (isMusicPlaying)  {
+            Log.e("isMusicPlaying", isMusicPlaying.toString())
+            isMusicPlaying = if (isMusicPlaying) {
                 mediaService?.pauseSong()
                 binding.playButton.setBackgroundResource(R.drawable.baseline_play_arrow_24)
                 false
@@ -324,6 +329,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.selectGenderFragment,
                 R.id.startListeningFragmentArtists,
                 R.id.startListeningFragmentEnd,
+                R.id.songFragment,
                 R.id.login -> {
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }

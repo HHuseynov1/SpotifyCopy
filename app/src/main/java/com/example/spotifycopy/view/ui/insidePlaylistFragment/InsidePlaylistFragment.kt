@@ -103,7 +103,7 @@ class InsidePlaylistFragment : Fragment() {
     private fun onItemClick(position: Int) {
         val activity = activity as MainActivity
         // startMusicPlayback(position)
-        activity.bindToService(position)
+        activity.startService(position)
         activity.subscribeToObserve()
 
     }

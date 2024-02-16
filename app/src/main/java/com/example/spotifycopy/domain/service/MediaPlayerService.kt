@@ -48,7 +48,7 @@ class MediaPlayerService : Service() {
     var songIndex: Int = 0
     private var currentMusic: String = ""
     private lateinit var mediaSession: MediaSessionCompat
-    val musicIsPlaying = MutableLiveData<Boolean>()
+    //val musicIsPlaying = MutableLiveData<Boolean>()
     private val NOTIFICATION_CHANNEL_ID = "MusicPlayerChannelId"
     private val NOTIFICATION_ID = 1
 
@@ -168,7 +168,7 @@ class MediaPlayerService : Service() {
     @RequiresApi(Build.VERSION_CODES.S)
     fun playSong(songPath: String?) {
         try {
-            musicIsPlaying.postValue(true)
+            isMusicPlaying(true)
             if (mediaPlayer.currentPosition == 0 || songPath != currentMusic) {
                 mediaPlayer.stop()
                 mediaPlayer.reset()
@@ -190,20 +190,20 @@ class MediaPlayerService : Service() {
         }
     }
 
-    fun isMusicPlaying(): Boolean {
-        Log.e("isPlaying", mediaPlayer.isPlaying.toString())
-        var isPlaying = false
-        if (songIndex >= 0) {
-            isPlaying = true
-        }
-        Log.e("isPlaying", isPlaying.toString())
-        return isPlaying
+    fun isMusicPlaying(check : Boolean): Boolean {
+//        Log.e("isPlaying", mediaPlayer.isPlaying.toString())
+//        var isPlaying = false
+//        if (songIndex >= 0) {
+//            isPlaying = true
+//        }
+//        Log.e("isPlaying", isPlaying.toString())
+        return check
     }
 
     fun pauseSong() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.pause()
-            musicIsPlaying.postValue(false)
+            isMusicPlaying(false)
         }
     }
 
