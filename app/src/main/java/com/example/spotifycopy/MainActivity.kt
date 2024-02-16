@@ -102,7 +102,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.vpSong.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                // Called when a new page (song) is selected
                 val selectedSong = swipeSongAdapter.songs.getOrNull(position)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && selectedSong != null) {
                     startService(position)
@@ -343,10 +342,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        if (isServiceBound) {
-//            unbindService(serviceConnection)
-//        }
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isServiceBound) {
+            unbindService(serviceConnection)
+        }
+    }
 }

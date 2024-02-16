@@ -43,7 +43,7 @@ import javax.inject.Inject
 class MediaPlayerService : Service() {
 
     private val TAG = "MediaPlayerService"
-    private lateinit var mediaPlayer: MediaPlayer
+    lateinit var mediaPlayer: MediaPlayer
     private lateinit var songs: ArrayList<SongModel>
     var songIndex: Int = 0
     private var currentMusic: String = ""

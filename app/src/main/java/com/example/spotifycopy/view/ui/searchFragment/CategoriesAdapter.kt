@@ -1,15 +1,12 @@
 package com.example.spotifycopy.view.ui.searchFragment
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.spotifycopy.data.entities.Categories
 import com.example.spotifycopy.databinding.SearchItemBinding
-import com.example.spotifycopy.databinding.SelectGenderItemBinding
 import com.example.spotifycopy.domain.models.CategoryModel
 
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {

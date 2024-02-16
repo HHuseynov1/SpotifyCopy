@@ -59,6 +59,8 @@ class SongFragment : Fragment() {
         }
     }
 
+    private val handler = Handler(Looper.getMainLooper())
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -87,7 +89,7 @@ class SongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler(Looper.getMainLooper()).postDelayed({
+        handler.postDelayed({
             currentMusicLiveData.observe(viewLifecycleOwner) { currentSong ->
                 if (currentMusic.value != currentSong.songUrl) {
                     mediaService.playSong(currentSong.songUrl)
@@ -131,7 +133,7 @@ class SongFragment : Fragment() {
 
     private fun currentSong() {
         currentMusicLiveData.observe(viewLifecycleOwner) {
-            Log.e("currenMusic", it.toString())
+            Log.e("currentMusic", it.toString())
             binding.txtSongName.text = it.title
             binding.txtArtistName.text = it.artist
             Glide.with(requireContext()).load(it.imageUrl).into(binding.songImage)
@@ -159,27 +161,25 @@ class SongFragment : Fragment() {
         }
     }
 
-
     private fun initialiseSeekbar() {
-        binding.seekBar.max = mediaPlayer.duration
+        val mp = mediaService.mediaPlayer
+        binding.seekBar.max = mediaService.mediaPlayer.duration
 
-        val handler = Handler(Looper.getMainLooper())
         handler.postDelayed(object : Runnable {
             override fun run() {
                 try {
-                    binding.seekBar.progress = mediaPlayer.currentPosition
+                    binding.seekBar.progress = mp.currentPosition
 
-                    val currentdurationInMillis = mediaPlayer.currentPosition
+                    val currentdurationInMillis = mp.currentPosition
                     val minutes = (currentdurationInMillis / 1000) / 60
                     val seconds = (currentdurationInMillis / 1000) % 60
                     val formattedCurrentDuration = String.format("%02d:%02d", minutes, seconds)
 
-                    val durationInMillis = mediaPlayer.duration
+                    val durationInMillis = mp.duration
                     val dminutes = (durationInMillis / 1000) / 60
                     val dseconds = (durationInMillis / 1000) % 60
                     val formattedDuration = String.format("%02d:%02d", dminutes, dseconds)
 
-                    // TextView içinde süreyi gösterin
                     binding.txtTimeStart.text = formattedCurrentDuration
                     binding.txtTimeEnd.text = formattedDuration
                     handler.postDelayed(this, 1000)
@@ -189,4 +189,18 @@ class SongFragment : Fragment() {
             }
         }, 0)
     }
+
+    override fun onStop() {
+        super.onStop()
+        if (isMusicServiceBound) {
+            requireContext().unbindService(serviceConnection)
+            isMusicServiceBound = false
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
+    }
+
 }

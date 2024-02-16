@@ -102,23 +102,8 @@ class InsidePlaylistFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.S)
     private fun onItemClick(position: Int) {
         val activity = activity as MainActivity
-        // startMusicPlayback(position)
         activity.startService(position)
         activity.subscribeToObserve()
-
     }
 
-//    private fun startMusicPlayback(position: Int) {
-//        val activity = activity as MainActivity
-//        Log.e("ListSong", listSong.toString())
-//        Log.e("position", position.toString())
-//
-//        val serviceIntent = Intent(requireContext(), MediaPlayerService::class.java).apply {
-//            // action = ACTION_PLAY_PAUSE
-//            putExtra(EXTRA_SONG_INDEX, position)
-//            putParcelableArrayListExtra(EXTRA_MUSIC_LIST, listSong as ArrayList<out Parcelable>)
-//        }
-//      //  requireContext().startService(serviceIntent)
-//        requireContext().bindService(serviceIntent,serviceConnection,Context.BIND_AUTO_CREATE)
-//    }
 }

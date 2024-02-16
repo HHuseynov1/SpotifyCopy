@@ -57,6 +57,7 @@
     <com.google.android.material.chip.ChipGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:singleSelection="true"
         app:layout_constraintTop_toBottomOf="@id/txtGender"
         >
 
@@ -118,12 +119,4 @@
             />
 
     </com.google.android.material.chip.ChipGroup>
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rvGender"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/txtGender"-->
-<!--        tools:listitem="@layout/select_gender_item" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.spotifycopy.view.ui.searchFragment.SearchInsideFragment
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -24,9 +26,15 @@ class SearchInsideFragment : Fragment() {
 
     lateinit var binding: FragmentSearchInsideBinding
 
-    private val myAdapter by lazy { SearchInsideAdapter(
-        currentSong = { id -> openSong(id) }
-    )}
+    private val myAdapter by lazy {
+        SearchInsideAdapter(
+            currentSong = { id ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    openSong(id)
+                }
+            }
+        )
+    }
 
     private val viewModel: SearchInsideViewModel by viewModels()
 
@@ -57,13 +65,13 @@ class SearchInsideFragment : Fragment() {
                 binding.rvSongs.visibility = View.GONE
             }
 
-            override fun onTextChanged(s: CharSequence?,start: Int, before: Int, count: Int) {
-                if(binding.edtSearch.text.isNotEmpty()) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.edtSearch.text.isNotEmpty()) {
                     binding.rvSongs.visibility = View.VISIBLE
                     filter(s.toString())
                     binding.texts.visibility = View.GONE
 
-                }else{
+                } else {
                     binding.rvSongs.visibility = View.GONE
                     binding.texts.visibility = View.VISIBLE
                 }
@@ -87,11 +95,10 @@ class SearchInsideFragment : Fragment() {
         }
     }
 
-    private fun openSong(position : Int){
-//        val mainActivity = activity as MainActivity
-//        mainActivity.viewPagerVisible()
-
-//        val action = SearchInsideFragmentDirections.actionSearchInsideFragmentToSongFragment(position)
-//        findNavController().navigate(action)
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun openSong(position: Int) {
+        val mainActivity = activity as MainActivity
+        mainActivity.startService(position)
+        mainActivity.subscribeToObserve()
     }
 }

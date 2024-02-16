@@ -10,8 +10,6 @@ import com.example.spotifycopy.databinding.ArtistsItemBinding
 import com.example.spotifycopy.domain.models.ArtistsModel
 
 class ArtistsItemAdapter : RecyclerView.Adapter<ArtistsItemAdapter.ArtistsViewHolder>() {
-
-
     private val genderCallBack = object : DiffUtil.ItemCallback<ArtistsModel>() {
         override fun areItemsTheSame(oldItem: ArtistsModel, newItem: ArtistsModel): Boolean {
             return oldItem.id == newItem.id
@@ -28,6 +26,7 @@ class ArtistsItemAdapter : RecyclerView.Adapter<ArtistsItemAdapter.ArtistsViewHo
     inner class ArtistsViewHolder(private val binding : ArtistsItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : ArtistsModel){
             binding.txtName.text = item.artistName
+            Glide.with(itemView.context).load(item.imageUrl).into(binding.imgArtists)
         }
     }
 
