@@ -78,7 +78,7 @@ class MediaPlayerService : Service() {
             onBind(it)
 
             GlobalScope.launch {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.Default) {
                     if (songIndex in songs.indices) {
                         if (songs.isNotEmpty()) {
                             when (it.action) {

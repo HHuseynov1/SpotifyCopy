@@ -21,7 +21,6 @@ class InsidePlaylistViewModel @Inject constructor(private val repo : Repository)
 
     val mutableLiveDataUser get() = _mutableLiveDataUser
 
-
     init {
         viewModelScope.launch {
             val list = repo.getAllSongs().toSongList()

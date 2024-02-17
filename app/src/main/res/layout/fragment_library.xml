@@ -153,7 +153,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
-                app:layout_constraintBottom_toTopOf="@id/rvArtist"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnRecents"
@@ -165,7 +164,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
-                app:layout_constraintBottom_toTopOf="@id/btnAddArtists"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvPlaylist"
@@ -178,7 +176,6 @@
                 android:layout_marginHorizontal="15dp"
                 android:backgroundTint="#111111"
                 android:padding="30dp"
-                app:layout_constraintBottom_toTopOf="@id/btnAddPodcastsAndShows"
                 app:layout_constraintTop_toBottomOf="@id/rvArtist" />
 
             <ImageView
@@ -221,9 +218,8 @@
                 android:padding="30dp"
                 android:textAlignment="textStart"
                 app:cornerRadius="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnAddArtists"
-                tools:layout_editor_absoluteX="0dp" />
+                />
 
             <ImageView
                 android:id="@+id/imgAddPodcastsAndShows"

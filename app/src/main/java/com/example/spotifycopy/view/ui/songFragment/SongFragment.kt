@@ -72,7 +72,6 @@ class SongFragment : Fragment() {
             songList = it
         }
 
-
         return binding.root
     }
 

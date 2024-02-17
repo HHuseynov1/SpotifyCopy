@@ -15,7 +15,7 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_searchInsideFragment"
-            app:destination="@id/searchInsideFragment" />
+            app:destination="@id/searchInsideFragment"/>
     </fragment>
 
     <fragment

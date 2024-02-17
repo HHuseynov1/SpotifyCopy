@@ -21,6 +21,7 @@ import com.example.spotifycopy.databinding.FragmentSearchInsideBinding
 import com.example.spotifycopy.domain.models.SongModel
 import dagger.hilt.android.AndroidEntryPoint
 
+@RequiresApi(Build.VERSION_CODES.S)
 @AndroidEntryPoint
 class SearchInsideFragment : Fragment() {
 
@@ -29,9 +30,7 @@ class SearchInsideFragment : Fragment() {
     private val myAdapter by lazy {
         SearchInsideAdapter(
             currentSong = { id ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    openSong(id)
-                }
+                openSong(id)
             }
         )
     }
@@ -95,7 +94,6 @@ class SearchInsideFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     private fun openSong(position: Int) {
         val mainActivity = activity as MainActivity
         mainActivity.startService(position)

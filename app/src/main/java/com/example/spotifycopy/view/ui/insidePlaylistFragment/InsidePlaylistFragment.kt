@@ -105,5 +105,4 @@ class InsidePlaylistFragment : Fragment() {
         activity.startService(position)
         activity.subscribeToObserve()
     }
-
 }

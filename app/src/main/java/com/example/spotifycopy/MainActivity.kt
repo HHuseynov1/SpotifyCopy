@@ -124,7 +124,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        bindService(Intent(this,MediaPlayerService::class.java),serviceConnection,Context.BIND_AUTO_CREATE)
+        bindService(
+            Intent(this, MediaPlayerService::class.java),
+            serviceConnection,
+            Context.BIND_AUTO_CREATE
+        )
     }
 
     fun startService(position: Int) {
@@ -145,7 +149,6 @@ class MainActivity : AppCompatActivity() {
         findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment)
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     private fun togglePlayBack() {
         if (isServiceBound) {
             Log.e("isMusicPlaying", isMusicPlaying.toString())
@@ -155,7 +158,9 @@ class MainActivity : AppCompatActivity() {
                 false
             } else {
                 currentMusic.observe(this) { currentMusic ->
-                    mediaService?.playSong(currentMusic)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        mediaService?.playSong(currentMusic)
+                    }
                     Log.e("positionSongFragment", currentMusic)
                 }
                 binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
@@ -263,12 +268,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (toggle.onOptionsItemSelected(item)) {
+//            return true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     private fun viewPagerGone() {
         val navHostFragment =
@@ -329,6 +334,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.startListeningFragmentArtists,
                 R.id.startListeningFragmentEnd,
                 R.id.songFragment,
+                R.id.insidePlaylistFragment,
                 R.id.login -> {
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 }
