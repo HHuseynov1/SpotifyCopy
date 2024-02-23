@@ -84,15 +84,14 @@ class SongFragment : Fragment() {
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         handler.postDelayed({
             currentMusicLiveData.observe(viewLifecycleOwner) { currentSong ->
-                if (currentMusic.value != currentSong.songUrl) {
+//                if (currentMusic.value != currentSong.songUrl) {
                     mediaService.playSong(currentSong.songUrl)
-                }
+               // }
                 if (musicIsPlayingSongFragment) {
                     binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
                 } else {
@@ -139,7 +138,6 @@ class SongFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     private fun togglePlayBack() {
         if (isMusicServiceBound) {
             musicIsPlayingSongFragment = if (musicIsPlayingSongFragment) {

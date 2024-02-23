@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
         swipeSongAdapter.setOnItemClickListener(object : SwipeSongAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
-                openSongFragment()
+                openSongFragment(position)
             }
         })
 
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openSongFragment() {
+    private fun openSongFragment(position : Int) {
         findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment)
     }
 
