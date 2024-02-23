@@ -76,10 +76,7 @@ class SearchInLibraryFragment : Fragment() {
         val list = ArrayList<LibraryModel>()
         viewModel.mutableLiveDataLibrary.observe(viewLifecycleOwner) {
             for (item in it) {
-                if (item.artistName.lowercase()
-                        .contains(text.lowercase()) || item.playlistName.lowercase()
-                        .contains(text.lowercase())
-                ) {
+                if (item.names.lowercase().contains(text.lowercase())) {
                     list.add(item)
                 }
             }

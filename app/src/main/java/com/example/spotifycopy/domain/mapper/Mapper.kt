@@ -48,7 +48,7 @@ object Mapper {
         )
     }
 
-    fun List<User>.toCartItemUser() = map{
+    fun List<User>.toCartItemUser() = map {
         CartItemModel(
             "",
             "",
@@ -57,7 +57,7 @@ object Mapper {
         )
     }
 
-    fun List<Song>.toCartItemSong() = map{
+    fun List<Song>.toCartItemSong() = map {
         CartItemModel(
             it.title,
             it.imageUrl,
@@ -66,22 +66,18 @@ object Mapper {
         )
     }
 
-    fun List<User>.toLibraryItemUser() = map{
+    fun List<User>.toLibraryItemUser() = map {
         LibraryModel(
             it.playlistName,
             it.imgPlaylist,
-            "",
-            ""
         )
     }
 
-    fun List<Artists>.toLibraryItemArtist() = map{
+    fun List<Artists>.toLibraryItemArtist() = map {
         LibraryModel(
-            "",
-            "",
-            it.imageUrl,
-            it.artistName
-            )
+            it.artistName,
+            it.imageUrl
+        )
     }
 
 }

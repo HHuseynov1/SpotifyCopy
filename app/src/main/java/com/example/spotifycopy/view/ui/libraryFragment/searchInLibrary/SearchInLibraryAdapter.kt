@@ -15,7 +15,7 @@ class SearchInLibraryAdapter : RecyclerView.Adapter<SearchInLibraryAdapter.Searc
 
     private val libraryCallBack = object : DiffUtil.ItemCallback<LibraryModel>() {
         override fun areItemsTheSame(oldItem: LibraryModel, newItem: LibraryModel): Boolean {
-            return oldItem.artistName == newItem.artistName
+            return oldItem.names == newItem.names
         }
 
         override fun areContentsTheSame(oldItem: LibraryModel, newItem: LibraryModel): Boolean {
@@ -34,9 +34,9 @@ class SearchInLibraryAdapter : RecyclerView.Adapter<SearchInLibraryAdapter.Searc
 //             binding.txtCategory.text = "Playlist"
 //             Glide.with(itemView.context).load(item.imgPlaylist).into(binding.circleImageView)
 //         }else {
-            binding.txtName.text = item.artistName
-            binding.txtCategory.text = "Artist"
-            Glide.with(itemView.context).load(item.imageUrl).into(binding.circleImageView)
+            binding.txtName.text = item.names
+            //binding.txtCategory.text = "Artist"
+            Glide.with(itemView.context).load(item.images).into(binding.circleImageView)
             //  }
             //}
         }
