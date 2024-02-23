@@ -1,49 +1,39 @@
-package com.example.spotifycopy.view.ui.searchFragment.SearchInsideFragment
+package com.example.spotifycopy.view.ui.libraryFragment.searchInLibrary
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.spotifycopy.MainActivity
 import com.example.spotifycopy.R
-import com.example.spotifycopy.databinding.FragmentSearchInsideBinding
+import com.example.spotifycopy.databinding.FragmentSearchInLibraryBinding
+import com.example.spotifycopy.domain.models.LibraryModel
 import com.example.spotifycopy.domain.models.SongModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchInsideFragment : Fragment() {
+class SearchInLibraryFragment : Fragment() {
 
-    lateinit var binding: FragmentSearchInsideBinding
+    lateinit var binding: FragmentSearchInLibraryBinding
 
-    private val myAdapter by lazy {
-        SearchInsideAdapter(
-            currentSong = { id ->
-                openSong(id)
-            }
-        )
-    }
+    private val viewModel: SearchInLibraryViewModel by viewModels()
 
-    private val viewModel: SearchInsideViewModel by viewModels()
+    private val myAdapter by lazy { SearchInLibraryAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchInsideBinding.inflate(inflater, container, false)
 
-        binding.rvSongs.adapter = myAdapter
-        binding.rvSongs.layoutManager = LinearLayoutManager(requireContext())
+        binding = FragmentSearchInLibraryBinding.inflate(inflater, container, false)
+
+        binding.rvLibrary.adapter = myAdapter
+        binding.rvLibrary.layoutManager = LinearLayoutManager(requireContext())
 
         return binding.root
     }
@@ -54,23 +44,24 @@ class SearchInsideFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
+
         searchData()
     }
 
     private fun searchData() {
         binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                binding.rvSongs.visibility = View.GONE
+                binding.rvLibrary.visibility = View.GONE
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (binding.edtSearch.text.isNotEmpty()) {
-                    binding.rvSongs.visibility = View.VISIBLE
+                    binding.rvLibrary.visibility = View.VISIBLE
                     filter(s.toString())
                     binding.texts.visibility = View.GONE
 
                 } else {
-                    binding.rvSongs.visibility = View.GONE
+                    binding.rvLibrary.visibility = View.GONE
                     binding.texts.visibility = View.VISIBLE
                 }
             }
@@ -82,20 +73,17 @@ class SearchInsideFragment : Fragment() {
     }
 
     private fun filter(text: String) {
-        val list = ArrayList<SongModel>()
-        viewModel.mutableLiveData.observe(viewLifecycleOwner) {
+        val list = ArrayList<LibraryModel>()
+        viewModel.mutableLiveDataLibrary.observe(viewLifecycleOwner) {
             for (item in it) {
-                if (item.title.lowercase().contains(text.lowercase())) {
+                if (item.artistName.lowercase()
+                        .contains(text.lowercase()) || item.playlistName.lowercase()
+                        .contains(text.lowercase())
+                ) {
                     list.add(item)
                 }
             }
             myAdapter.addItems(list)
         }
-    }
-
-    private fun openSong(position: Int) {
-        val mainActivity = activity as MainActivity
-        mainActivity.startService(position)
-        mainActivity.subscribeToObserve()
     }
 }

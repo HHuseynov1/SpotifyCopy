@@ -48,7 +48,7 @@ class MediaPlayerService : Service() {
     var songIndex: Int = 0
     private var currentMusic: String = ""
     private lateinit var mediaSession: MediaSessionCompat
-    //val musicIsPlaying = MutableLiveData<Boolean>()
+
     private val NOTIFICATION_CHANNEL_ID = "MusicPlayerChannelId"
     private val NOTIFICATION_ID = 1
 
@@ -64,16 +64,10 @@ class MediaPlayerService : Service() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand() called")
 
         intent?.let {
-//            songIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
-//            songs =
-//                intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST) as ArrayList<SongModel>
-//            Log.e("serviceSongIndex", songIndex.toString())
-//            Log.e("serviceSongList", songs.toString())
 
             onBind(it)
 
@@ -87,7 +81,8 @@ class MediaPlayerService : Service() {
                                         pauseSong()
                                     } else {
                                         playSong(songs[songIndex].songUrl)
-                                        Log.e("geldi","geldi")
+
+                                        Log.e("geldi", "geldi")
                                     }
                                 }
 
@@ -124,7 +119,6 @@ class MediaPlayerService : Service() {
 
     private val binder = MusicPlayerBinder()
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onBind(intent: Intent): IBinder {
         val incomingSongList = intent.getParcelableArrayListExtra<SongModel>(EXTRA_MUSIC_LIST)
         val incomingSongIndex = intent.getIntExtra(EXTRA_SONG_INDEX, 0)
@@ -165,7 +159,6 @@ class MediaPlayerService : Service() {
         super.onDestroy()
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     fun playSong(songPath: String?) {
         try {
             isMusicPlaying(true)
@@ -180,7 +173,7 @@ class MediaPlayerService : Service() {
                 Log.e("currentMusicLiveData", currentMusicLiveData.toString())
                 CurrentMusic.currentMusic.postValue(songPath)
                 showNotification(music.title, music.artist, null)
-                Log.e("music",music.toString())
+                Log.e("music", music.toString())
                 mediaPlayer.start()
             } else {
                 mediaPlayer.start()
@@ -190,7 +183,7 @@ class MediaPlayerService : Service() {
         }
     }
 
-    fun isMusicPlaying(check : Boolean): Boolean {
+    fun isMusicPlaying(check: Boolean): Boolean {
 //        Log.e("isPlaying", mediaPlayer.isPlaying.toString())
 //        var isPlaying = false
 //        if (songIndex >= 0) {
@@ -212,7 +205,6 @@ class MediaPlayerService : Service() {
         mediaPlayer.reset()
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     fun skipToNextSong() {
         mediaPlayer.stop()
         mediaPlayer.reset()
@@ -223,7 +215,6 @@ class MediaPlayerService : Service() {
         playSong(nextSongPath)
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     fun skipToPreviousSong() {
         mediaPlayer.stop()
         mediaPlayer.reset()
@@ -255,7 +246,6 @@ class MediaPlayerService : Service() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     private fun showNotification(
         music_name: String,
         artist_name: String,

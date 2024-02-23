@@ -54,5 +54,9 @@
     <string name="non_binary">Non-binary</string>
     <string name="other">Other</string>
     <string name="prefer_not_to_say">Prefer not to say</string>
+    <string name="find_your_favourites">Find your favourites</string>
+    <string name="search_everything_you_ve_liked_followed_or_created">Search everything you\'ve liked,followed, or created</string>
+    <string name="search_your_librarry">Search Your Librarry</string>
+    <string name="examplecategory">ExampleCategory</string>
 
 </resources>

@@ -70,7 +70,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -158,9 +157,8 @@ class MainActivity : AppCompatActivity() {
                 false
             } else {
                 currentMusic.observe(this) { currentMusic ->
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        mediaService?.playSong(currentMusic)
-                    }
+                    mediaService?.playSong(currentMusic)
+
                     Log.e("positionSongFragment", currentMusic)
                 }
                 binding.playButton.setBackgroundResource(R.drawable.baseline_pause_24)
@@ -182,7 +180,6 @@ class MainActivity : AppCompatActivity() {
         Glide.with(this).load(song.imageUrl).into(binding.imgSong)
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     fun subscribeToObserve() {
         Log.e("subscribeToObserve", "subscribeToObserve")
 

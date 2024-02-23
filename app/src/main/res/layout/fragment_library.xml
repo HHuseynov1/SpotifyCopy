@@ -57,6 +57,7 @@
                    />
 
                <androidx.appcompat.widget.AppCompatButton
+                   android:id="@+id/btnSearch"
                    android:layout_width="32dp"
                    android:layout_height="0dp"
                    android:background="@drawable/search_for_library"

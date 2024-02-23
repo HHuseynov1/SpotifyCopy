@@ -99,7 +99,6 @@ class InsidePlaylistFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
     private fun onItemClick(position: Int) {
         val activity = activity as MainActivity
         activity.startService(position)

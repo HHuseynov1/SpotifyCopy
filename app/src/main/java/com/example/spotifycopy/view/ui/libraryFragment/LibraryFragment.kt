@@ -77,6 +77,10 @@ class LibraryFragment : Fragment() {
             mainActivity.openDrawer()
         }
 
+        binding.btnSearch.setOnClickListener {
+            findNavController().navigate(R.id.searchInLibraryFragment)
+        }
+
         return binding.root
     }
 

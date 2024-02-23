@@ -7,6 +7,7 @@ import com.example.spotifycopy.data.entities.User
 import com.example.spotifycopy.domain.models.ArtistsModel
 import com.example.spotifycopy.domain.models.CartItemModel
 import com.example.spotifycopy.domain.models.CategoryModel
+import com.example.spotifycopy.domain.models.LibraryModel
 import com.example.spotifycopy.domain.models.SongModel
 import com.example.spotifycopy.domain.models.UserModel
 
@@ -63,6 +64,24 @@ object Mapper {
             "",
             ""
         )
+    }
+
+    fun List<User>.toLibraryItemUser() = map{
+        LibraryModel(
+            it.playlistName,
+            it.imgPlaylist,
+            "",
+            ""
+        )
+    }
+
+    fun List<Artists>.toLibraryItemArtist() = map{
+        LibraryModel(
+            "",
+            "",
+            it.imageUrl,
+            it.artistName
+            )
     }
 
 }

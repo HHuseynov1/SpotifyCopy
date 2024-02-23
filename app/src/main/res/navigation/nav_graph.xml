@@ -22,7 +22,11 @@
         android:id="@+id/libraryFragment"
         android:name="com.example.spotifycopy.view.ui.libraryFragment.LibraryFragment"
         android:label="fragment_library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library" >
+        <action
+            android:id="@+id/action_libraryFragment_to_searchInLibraryFragment"
+            app:destination="@id/searchInLibraryFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
@@ -115,4 +119,9 @@
         android:label="fragment_search_inside"
         tools:layout="@layout/fragment_search_inside" >
     </fragment>
+    <fragment
+        android:id="@+id/searchInLibraryFragment"
+        android:name="com.example.spotifycopy.view.ui.libraryFragment.searchInLibrary.SearchInLibraryFragment"
+        android:label="fragment_search_in_library"
+        tools:layout="@layout/fragment_search_in_library" />
 </navigation>
