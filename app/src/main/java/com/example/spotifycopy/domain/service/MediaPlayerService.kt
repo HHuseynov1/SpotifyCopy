@@ -52,9 +52,6 @@ class MediaPlayerService : Service() {
     private val NOTIFICATION_CHANNEL_ID = "MusicPlayerChannelId"
     private val NOTIFICATION_ID = 1
 
-    @Inject
-    lateinit var repo: Repository
-
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()

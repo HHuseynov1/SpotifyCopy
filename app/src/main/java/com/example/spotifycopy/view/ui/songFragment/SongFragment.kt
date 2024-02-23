@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.spotifycopy.R
@@ -35,6 +36,7 @@ import com.example.spotifycopy.utils.CurrentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusic
 import com.example.spotifycopy.utils.CurrentMusic.currentMusicLiveData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SongFragment : Fragment() {
@@ -45,6 +47,7 @@ class SongFragment : Fragment() {
     private lateinit var mediaService: MediaPlayerService
     private var isMusicServiceBound = false
     private var musicIsPlayingSongFragment = false
+    private var position = 0
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -68,8 +71,26 @@ class SongFragment : Fragment() {
 
         mediaPlayer = MediaPlayer()
 
+        songList = ArrayList()
+
+
         viewModel.mutableLiveData.observe(viewLifecycleOwner) {
             songList = it
+
+            position = arguments?.getInt("Position") ?: 0
+
+            handler.postDelayed({
+                    mediaService.songIndex = position
+                    mediaService.playSong(songList[position].songUrl)
+
+                    if (musicIsPlayingSongFragment) {
+                        binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
+                    } else {
+                        binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
+                    }
+
+                    initialiseSeekbar()
+            }, 500)
         }
 
         return binding.root
@@ -87,19 +108,6 @@ class SongFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        handler.postDelayed({
-            currentMusicLiveData.observe(viewLifecycleOwner) { currentSong ->
-//                if (currentMusic.value != currentSong.songUrl) {
-                    mediaService.playSong(currentSong.songUrl)
-               // }
-                if (musicIsPlayingSongFragment) {
-                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_pause_circle_24)
-                } else {
-                    binding.btnPlay.setBackgroundResource(R.drawable.baseline_play_circle_24)
-                }
-                initialiseSeekbar()
-            }
-        }, 500)
 
         currentSong()
 
@@ -157,6 +165,7 @@ class SongFragment : Fragment() {
             }
         }
     }
+
 
     private fun initialiseSeekbar() {
         val mp = mediaService.mediaPlayer

@@ -145,7 +145,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openSongFragment(position : Int) {
-        findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment)
+        Log.e("positionMain",position.toString())
+        val bundle = Bundle()
+        bundle.putInt("Position",position)
+        findNavController(R.id.fragmentContainerView).navigate(R.id.openSongFragment,bundle)
     }
 
     private fun togglePlayBack() {
